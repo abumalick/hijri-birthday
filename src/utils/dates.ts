@@ -31,3 +31,22 @@ export function getNextBirthday(
 
   return nextBirthday;
 }
+
+export function displayGregorianDate(
+  gregorianDate: Temporal.PlainDate
+): string {
+  return gregorianDate.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+export function displayHijriDate(hijriDate: Temporal.PlainDate): string {
+  return hijriDate.toLocaleString("en-US", {
+    calendar: "islamic-umalqura",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}

@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { LocalStorageService } from '../services/LocalStorageService';
-import { getHijriDate } from '../utils/dates';
+import { displayHijriDate, getHijriDate } from '../utils/dates';
 import { Temporal } from '@js-temporal/polyfill';
 
 export const Route = createFileRoute('/add')({
@@ -13,19 +13,19 @@ function AddBirthday() {
   const storageService = new LocalStorageService();
   const [name, setName] = useState('');
   const [gregorianDate, setGregorianDate] = useState('');
-  const [hijriDate, setHijriDate] = useState('');
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newGregorianDate = e.target.value;
     setGregorianDate(newGregorianDate);
-    if (newGregorianDate) {
-      const temporalDate = Temporal.PlainDate.from(newGregorianDate);
-      const newHijriDate = getHijriDate(temporalDate);
-      setHijriDate(newHijriDate.toString());
-    } else {
-      setHijriDate('');
-    }
   };
+
+  const hijriDate = useMemo(() => {
+    if (gregorianDate) {
+      const temporalDate = Temporal.PlainDate.from(gregorianDate);
+      return displayHijriDate(getHijriDate(temporalDate));
+    }
+    return '';
+  }, [gregorianDate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +53,7 @@ function AddBirthday() {
             onChange={(e) => setName(e.target.value)}
             className="w-full input input-bordered"
             required
+            data-testid="name-input"
           />
         </div>
         <div>
@@ -66,15 +67,16 @@ function AddBirthday() {
             onChange={handleDateChange}
             className="w-full input input-bordered"
             required
+            data-testid="gregorian-date-input"
           />
         </div>
         {hijriDate && (
           <div>
             <p className="font-bold">Hijri Date</p>
-            <p>{hijriDate}</p>
+            <p data-testid="hijri-date-preview">{hijriDate}</p>
           </div>
         )}
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary" data-testid="submit-button">
           Add Birthday
         </button>
       </form>

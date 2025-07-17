@@ -5,6 +5,7 @@ import {
   getGregorianDate,
   getAge,
   getNextBirthday,
+  displayHijriDate,
 } from "./dates";
 
 describe("Date Utilities", () => {
@@ -145,6 +146,20 @@ describe("Date Utilities", () => {
       expect(
         nextBirthday.equals(mockToday.withCalendar("islamic-umalqura"))
       ).toBe(true);
+    });
+  });
+
+  describe("displayHijriDate", () => {
+    it("should format the Hijri date correctly", () => {
+      const hijriDate = Temporal.PlainDate.from({
+        year: 1446,
+        month: 1,
+        day: 11,
+        calendar: "islamic-umalqura",
+      });
+      // This corresponds to 2024-07-17, which is a Wednesday.
+      const formattedDate = displayHijriDate(hijriDate);
+      expect(formattedDate).toBe("Muharram 11, 1446 AH");
     });
   });
 });

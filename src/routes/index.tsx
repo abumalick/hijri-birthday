@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { LocalStorageService } from '../services/LocalStorageService';
 import type { BirthdayEvent } from '../services/types';
-import { getAge, getHijriDate, getNextBirthday } from '../utils/dates';
+import { displayGregorianDate, displayHijriDate, getAge, getHijriDate, getNextBirthday } from '../utils/dates';
 
 export const Route = createFileRoute('/')({
   component: BirthdayList,
@@ -30,17 +30,23 @@ function BirthdayList() {
       ) : (
         <div className="grid gap-4">
           {events.map((event) => (
-            <div key={event.id} className="p-4 shadow-lg card bg-base-100">
-              <h2 className="text-2xl font-bold">{event.name}</h2>
+            <div
+              key={event.id}
+              className="p-4 shadow-lg card bg-base-100"
+              data-testid="event-card"
+            >
+              <h2 className="text-2xl font-bold" data-testid="event-name">
+                {event.name}
+              </h2>
               <div className="grid grid-cols-2 gap-4 mt-4">
                 <div>
                   <p className="font-bold">Gregorian</p>
-                  <p>{event.gregorianDate.toString()}</p>
+                  <p>{displayGregorianDate(event.gregorianDate)}</p>
                   <p>Age: {getAge(event.gregorianDate)}</p>
                 </div>
                 <div>
                   <p className="font-bold">Hijri</p>
-                  <p>{getHijriDate(event.gregorianDate).toString()}</p>
+                  <p>{displayHijriDate(getHijriDate(event.gregorianDate))}</p>
                   <p>
                     Age: {getAge(getHijriDate(event.gregorianDate))}
                   </p>
@@ -50,7 +56,11 @@ function BirthdayList() {
           ))}
         </div>
       )}
-      <Link to="/add" className="btn btn-primary btn-circle fixed bottom-4 right-4">
+      <Link
+        to="/add"
+        className="btn btn-primary btn-circle fixed bottom-4 right-4"
+        data-testid="add-event-button"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-6 h-6"
