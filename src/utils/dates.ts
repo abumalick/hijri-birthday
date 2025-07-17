@@ -13,8 +13,8 @@ export function getGregorianDate(
 }
 
 export function getAge(birthDate: Temporal.PlainDate): number {
-  const today = Temporal.Now.plainDateISO();
-  return today.since(birthDate).years;
+  const today = Temporal.Now.plainDateISO().withCalendar(birthDate.calendarId);
+  return today.since(birthDate, { largestUnit: "years" }).years;
 }
 
 export function getNextBirthday(

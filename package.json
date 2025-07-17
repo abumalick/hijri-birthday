@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.1",
+    "@playwright/test": "^1.54.1",
     "@tailwindcss/vite": "^4.1.11",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
