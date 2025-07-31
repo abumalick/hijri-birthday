@@ -1,6 +1,13 @@
 import { Link } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
-import { MenuIcon, HomeIcon, AddIcon, SettingsIcon, AboutIcon } from './icons'
+import {
+	MenuIcon,
+	HomeIcon,
+	AddIcon,
+	SettingsIcon,
+	AboutIcon,
+	CalendarIcon,
+} from './icons'
 
 interface LayoutProps {
 	title: string
@@ -76,6 +83,16 @@ export function Layout({ title, children }: LayoutProps) {
 							>
 								<AddIcon />
 								Add Birthday
+							</Link>
+						</li>
+						<li>
+							<Link
+								to="/months"
+								className="flex items-center gap-3"
+								activeProps={{ className: 'active' }}
+							>
+								<CalendarIcon />
+								Hijri Months
 							</Link>
 						</li>
 						<div className="divider" />

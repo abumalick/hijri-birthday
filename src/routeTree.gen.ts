@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MonthsRouteImport } from './routes/months'
 import { Route as AddRouteImport } from './routes/add'
 import { Route as IndexRouteImport } from './routes/index'
 
+const MonthsRoute = MonthsRouteImport.update({
+  id: '/months',
+  path: '/months',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AddRoute = AddRouteImport.update({
   id: '/add',
   path: '/add',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/months': typeof MonthsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/months': typeof MonthsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/months': typeof MonthsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/add'
+  fullPaths: '/' | '/add' | '/months'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/add'
-  id: '__root__' | '/' | '/add'
+  to: '/' | '/add' | '/months'
+  id: '__root__' | '/' | '/add' | '/months'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AddRoute: typeof AddRoute
+  MonthsRoute: typeof MonthsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/months': {
+      id: '/months'
+      path: '/months'
+      fullPath: '/months'
+      preLoaderRoute: typeof MonthsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/add': {
       id: '/add'
       path: '/add'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AddRoute: AddRoute,
+  MonthsRoute: MonthsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

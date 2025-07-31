@@ -51,3 +51,21 @@
     padding-left: max(1rem, env(safe-area-inset-left));
   }
 }
+
+/* Arabic font styling for Hijri months */
+.font-arabic {
+  font-family: 'Amiri', 'Noto Sans Arabic', 'Arabic Typesetting', serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Hover effects for month cards */
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Special styling for month badges */
+.badge-info, .badge-warning, .badge-success, .badge-secondary {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
