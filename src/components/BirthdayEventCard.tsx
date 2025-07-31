@@ -56,12 +56,6 @@ export function DateEventCard({ event, className = '' }: DateEventCardProps) {
 						</span>
 					</div>
 				</div>
-
-				<div className="card-actions justify-end mt-4">
-					<button type="button" className="btn btn-xs btn-ghost">
-						📅 Set Reminder
-					</button>
-				</div>
 			</div>
 		</div>
 	)
