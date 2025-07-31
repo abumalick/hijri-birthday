@@ -1,11 +1,6 @@
-import { useState, useEffect, useMemo } from 'react'
-import type {
-	BirthdayEvent,
-	Person,
-	TimelineSection,
-	CalendarType,
-} from '../services/types'
+import { useEffect, useMemo, useState } from 'react'
 import { LocalStorageService } from '../services/LocalStorageService'
+import type { BirthdayEvent, CalendarType } from '../services/types'
 import {
 	convertLegacyEventToPerson,
 	getTimelineEvents,
