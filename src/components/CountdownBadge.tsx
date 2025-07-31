@@ -1,16 +1,20 @@
-import { getCountdownColor, formatCountdown } from '../utils/dates'
+import {
+	getCountdownColor,
+	formatCountdown,
+	type TimeUntilBirthday,
+} from '../utils/dates'
 
 interface CountdownBadgeProps {
-	daysUntil: number
+	timeUntil: TimeUntilBirthday
 	className?: string
 }
 
 export function CountdownBadge({
-	daysUntil,
+	timeUntil,
 	className = '',
 }: CountdownBadgeProps) {
-	const colorClass = getCountdownColor(daysUntil)
-	const countdownText = formatCountdown(daysUntil)
+	const colorClass = getCountdownColor(timeUntil.totalDays)
+	const countdownText = formatCountdown(timeUntil)
 
 	return (
 		<div

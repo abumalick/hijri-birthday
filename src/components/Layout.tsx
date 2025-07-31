@@ -7,6 +7,7 @@ import {
 	SettingsIcon,
 	AboutIcon,
 	CalendarIcon,
+	GuidanceIcon,
 } from './icons'
 
 interface LayoutProps {
@@ -58,8 +59,8 @@ export function Layout({ title, children }: LayoutProps) {
 								</div>
 							</div>
 							<div>
-								<h2 className="text-lg font-bold">Hijri Birthday</h2>
-								<p className="text-sm opacity-70">Never miss a birthday</p>
+								<h2 className="text-lg font-bold">Islamic Date Tracker</h2>
+								<p className="text-sm opacity-70">Track important dates</p>
 							</div>
 						</div>
 					</div>
@@ -82,7 +83,7 @@ export function Layout({ title, children }: LayoutProps) {
 								activeProps={{ className: 'active' }}
 							>
 								<AddIcon />
-								Add Birthday
+								Add Date
 							</Link>
 						</li>
 						<li>
@@ -93,6 +94,16 @@ export function Layout({ title, children }: LayoutProps) {
 							>
 								<CalendarIcon />
 								Hijri Months
+							</Link>
+						</li>
+						<li>
+							<Link
+								to="/guidance"
+								className="flex items-center gap-3"
+								activeProps={{ className: 'active' }}
+							>
+								<GuidanceIcon />
+								Islamic Guidance
 							</Link>
 						</li>
 						<div className="divider" />

@@ -3,15 +3,12 @@ import { CalendarBadge } from './CalendarBadge'
 import { CountdownBadge } from './CountdownBadge'
 import { displayGregorianDate, displayHijriDate } from '../utils/dates'
 
-interface BirthdayEventCardProps {
+interface DateEventCardProps {
 	event: TimelineBirthdayEvent
 	className?: string
 }
 
-export function BirthdayEventCard({
-	event,
-	className = '',
-}: BirthdayEventCardProps) {
+export function DateEventCard({ event, className = '' }: DateEventCardProps) {
 	const isGregorian = event.calendarType === 'gregorian'
 	const dateDisplay = isGregorian
 		? displayGregorianDate(event.nextBirthday)
@@ -44,16 +41,16 @@ export function BirthdayEventCard({
 							</div>
 						</div>
 					</div>
-					<CountdownBadge daysUntil={event.daysUntilNext} />
+					<CountdownBadge timeUntil={event.timeUntilNext} />
 				</div>
 
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
-						<span className="text-sm text-base-content/70">Next Birthday:</span>
+						<span className="text-sm text-base-content/70">Next Date:</span>
 						<span className="font-medium">{dateDisplay}</span>
 					</div>
 					<div className="flex items-center justify-between">
-						<span className="text-sm text-base-content/70">Turning:</span>
+						<span className="text-sm text-base-content/70">Age:</span>
 						<span className="font-medium">
 							{event.ageOnNextBirthday} years old
 						</span>
@@ -61,12 +58,6 @@ export function BirthdayEventCard({
 				</div>
 
 				<div className="card-actions justify-end mt-4">
-					<button type="button" className="btn btn-xs btn-ghost">
-						🎁 Gift Ideas
-					</button>
-					<button type="button" className="btn btn-xs btn-ghost">
-						🎉 Plan Party
-					</button>
 					<button type="button" className="btn btn-xs btn-ghost">
 						📅 Set Reminder
 					</button>

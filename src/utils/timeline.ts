@@ -9,6 +9,7 @@ import type {
 import {
 	getHijriDate,
 	getDaysUntilBirthday,
+	getTimeUntilBirthday,
 	getNextGregorianBirthday,
 	getNextHijriBirthday,
 	calculateGregorianAge,
@@ -44,7 +45,7 @@ function generateGregorianEvent(
 	gregorianBirthDate: Temporal.PlainDate,
 ): TimelineBirthdayEvent {
 	const nextBirthday = getNextGregorianBirthday(gregorianBirthDate)
-	const daysUntil = getDaysUntilBirthday(gregorianBirthDate)
+	const timeUntil = getTimeUntilBirthday(gregorianBirthDate)
 	const ageOnNext = calculateGregorianAge(gregorianBirthDate)
 
 	return {
@@ -54,7 +55,8 @@ function generateGregorianEvent(
 		calendarType: 'gregorian',
 		birthDate: gregorianBirthDate,
 		nextBirthday,
-		daysUntilNext: daysUntil,
+		daysUntilNext: timeUntil.totalDays, // Keep for backward compatibility
+		timeUntilNext: timeUntil, // New detailed time structure
 		ageOnNextBirthday: ageOnNext,
 		reminderSet: false,
 	}
@@ -67,7 +69,7 @@ function generateHijriEvent(
 	hijriBirthDate: Temporal.PlainDate,
 ): TimelineBirthdayEvent {
 	const nextBirthday = getNextHijriBirthday(hijriBirthDate)
-	const daysUntil = getDaysUntilBirthday(hijriBirthDate)
+	const timeUntil = getTimeUntilBirthday(hijriBirthDate)
 	const ageOnNext = calculateHijriAge(hijriBirthDate)
 
 	return {
@@ -77,7 +79,8 @@ function generateHijriEvent(
 		calendarType: 'hijri',
 		birthDate: hijriBirthDate,
 		nextBirthday,
-		daysUntilNext: daysUntil,
+		daysUntilNext: timeUntil.totalDays, // Keep for backward compatibility
+		timeUntilNext: timeUntil, // New detailed time structure
 		ageOnNextBirthday: ageOnNext,
 		reminderSet: false,
 	}

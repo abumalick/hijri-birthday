@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MonthsRouteImport } from './routes/months'
+import { Route as GuidanceRouteImport } from './routes/guidance'
 import { Route as AddRouteImport } from './routes/add'
 import { Route as IndexRouteImport } from './routes/index'
 
 const MonthsRoute = MonthsRouteImport.update({
   id: '/months',
   path: '/months',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidanceRoute = GuidanceRouteImport.update({
+  id: '/guidance',
+  path: '/guidance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AddRoute = AddRouteImport.update({
@@ -32,30 +38,34 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/add' | '/months'
+  fullPaths: '/' | '/add' | '/guidance' | '/months'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/add' | '/months'
-  id: '__root__' | '/' | '/add' | '/months'
+  to: '/' | '/add' | '/guidance' | '/months'
+  id: '__root__' | '/' | '/add' | '/guidance' | '/months'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AddRoute: typeof AddRoute
+  GuidanceRoute: typeof GuidanceRoute
   MonthsRoute: typeof MonthsRoute
 }
 
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/months'
       fullPath: '/months'
       preLoaderRoute: typeof MonthsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guidance': {
+      id: '/guidance'
+      path: '/guidance'
+      fullPath: '/guidance'
+      preLoaderRoute: typeof GuidanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/add': {
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AddRoute: AddRoute,
+  GuidanceRoute: GuidanceRoute,
   MonthsRoute: MonthsRoute,
 }
 export const routeTree = rootRouteImport

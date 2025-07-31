@@ -1,4 +1,5 @@
 import type { Temporal } from '@js-temporal/polyfill'
+import type { TimeUntilBirthday } from '../utils/dates'
 
 // Legacy type for backward compatibility
 export type BirthdayEvent = {
@@ -17,7 +18,8 @@ export interface TimelineBirthdayEvent {
 	calendarType: CalendarType
 	birthDate: Temporal.PlainDate
 	nextBirthday: Temporal.PlainDate
-	daysUntilNext: number
+	daysUntilNext: number // Keep for backward compatibility
+	timeUntilNext: TimeUntilBirthday // New detailed time structure
 	ageOnNextBirthday: number
 	relationship?: string
 	reminderSet?: boolean

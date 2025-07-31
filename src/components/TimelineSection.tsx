@@ -1,5 +1,5 @@
 import type { TimelineSection, CalendarType } from '../services/types'
-import { BirthdayEventCard } from './BirthdayEventCard'
+import { DateEventCard } from './BirthdayEventCard'
 
 interface TimelineSectionProps {
 	section: TimelineSection
@@ -42,7 +42,7 @@ export function TimelineSectionComponent({
 
 			<div className="grid gap-4">
 				{events.map((event) => (
-					<BirthdayEventCard
+					<DateEventCard
 						key={event.id}
 						event={event}
 						className="transition-all duration-300 ease-in-out"

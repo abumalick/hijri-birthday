@@ -52,10 +52,31 @@ export function displayHijriDate(hijriDate: Temporal.PlainDate): string {
 }
 
 // New countdown and timeline utilities
-export function getDaysUntilBirthday(birthDate: Temporal.PlainDate): number {
+export interface TimeUntilBirthday {
+	months: number
+	days: number
+	totalDays: number
+}
+
+export function getTimeUntilBirthday(
+	birthDate: Temporal.PlainDate,
+): TimeUntilBirthday {
 	const nextBirthday = getNextBirthday(birthDate)
 	const today = Temporal.Now.plainDateISO().withCalendar(birthDate.calendarId)
-	return nextBirthday.since(today).total({ unit: 'day' })
+
+	// Get the duration with months and days
+	const duration = today.until(nextBirthday, { largestUnit: 'month' })
+	const totalDays = Math.ceil(nextBirthday.since(today).total({ unit: 'day' }))
+
+	return {
+		months: duration.months,
+		days: duration.days,
+		totalDays,
+	}
+}
+
+export function getDaysUntilBirthday(birthDate: Temporal.PlainDate): number {
+	return getTimeUntilBirthday(birthDate).totalDays
 }
 
 export function getCountdownColor(
@@ -73,7 +94,31 @@ export function getTimeRangeLabel(daysUntil: number): string {
 	return 'Rest of Year'
 }
 
-export function formatCountdown(daysUntil: number): string {
+export function formatCountdown(timeUntil: TimeUntilBirthday): string {
+	const { months, days, totalDays } = timeUntil
+
+	if (totalDays === 0) return 'Today!'
+	if (totalDays === 1) return '1 Day'
+
+	// If less than a month, show only days
+	if (months === 0) {
+		return `${days} Day${days === 1 ? '' : 's'}`
+	}
+
+	// If exactly whole months, show only months
+	if (days === 0) {
+		return `${months} Month${months === 1 ? '' : 's'}`
+	}
+
+	// Show both months and days
+	const monthText = `${months} Month${months === 1 ? '' : 's'}`
+	const dayText = `${days} Day${days === 1 ? '' : 's'}`
+
+	return `${monthText}, ${dayText}`
+}
+
+// Overloaded function for backward compatibility
+export function formatCountdownFromDays(daysUntil: number): string {
 	if (daysUntil === 0) return 'Today!'
 	if (daysUntil === 1) return '1 Day'
 	return `${Math.ceil(daysUntil)} Days`

@@ -6,10 +6,10 @@ import { HijriDateDisplay } from '../components/HijriDateDisplay'
 import { useTimelineEvents } from '../hooks/useTimelineEvents'
 
 export const Route = createFileRoute('/')({
-	component: BirthdayList,
+	component: DateTracker,
 })
 
-function BirthdayList() {
+function DateTracker() {
 	const {
 		timelineSections,
 		activeFilter,
@@ -19,7 +19,7 @@ function BirthdayList() {
 	} = useTimelineEvents()
 
 	return (
-		<Layout title="Hijri Birthday">
+		<Layout title="Islamic Date Tracker">
 			<div className="container p-4 mx-auto">
 				{isEmpty ? (
 					<div className="hero bg-base-200 min-h-[calc(100vh-4rem)]">
@@ -27,14 +27,14 @@ function BirthdayList() {
 							<div className="max-w-md">
 								<div className="text-6xl mb-4">🌙</div>
 								<h1 className="text-4xl font-bold mb-4">
-									Welcome to Hijri Birthday
+									Welcome to Islamic Date Tracker
 								</h1>
 								<p className="py-6 text-base-content/70">
-									Never miss a Hijri birthday again! Add your friends and family
-									to get started.
+									Track important dates for your family members using both
+									Gregorian and Hijri calendars for practical purposes.
 								</p>
 								<Link to="/add" className="btn btn-primary btn-lg">
-									Add Your First Birthday
+									Add Your First Date
 								</Link>
 							</div>
 						</div>
@@ -43,10 +43,10 @@ function BirthdayList() {
 					<>
 						<div className="mb-6">
 							<h1 className="text-3xl font-bold text-base-content mb-2">
-								🎂 Upcoming Birthdays
+								📅 Upcoming Dates
 							</h1>
 							<p className="text-base-content/70">
-								Track birthdays in both Gregorian and Hijri calendars
+								Track important dates in both Gregorian and Hijri calendars
 							</p>
 						</div>
 
@@ -65,10 +65,10 @@ function BirthdayList() {
 								<div className="text-center py-12 animate-in fade-in duration-500">
 									<div className="text-4xl mb-4">📅</div>
 									<h3 className="text-xl font-semibold mb-2">
-										No upcoming birthdays
+										No upcoming dates
 									</h3>
 									<p className="text-base-content/70">
-										No birthdays found for the selected calendar filter.
+										No dates found for the selected calendar filter.
 									</p>
 								</div>
 							) : (

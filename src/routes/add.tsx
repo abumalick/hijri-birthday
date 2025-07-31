@@ -6,10 +6,10 @@ import { LocalStorageService } from '../services/LocalStorageService'
 import { displayHijriDate, getHijriDate } from '../utils/dates'
 
 export const Route = createFileRoute('/add')({
-	component: AddBirthday,
+	component: AddDate,
 })
 
-function AddBirthday() {
+function AddDate() {
 	const navigate = useNavigate()
 	const storageService = new LocalStorageService()
 	const [name, setName] = useState('')
@@ -40,12 +40,14 @@ function AddBirthday() {
 	}
 
 	return (
-		<Layout title="Add Birthday">
+		<Layout title="Add Date">
 			<div className="container p-4 mx-auto max-w-md">
 				<div className="mb-6">
-					<h2 className="text-2xl font-bold text-base-content">New Birthday</h2>
+					<h2 className="text-2xl font-bold text-base-content">
+						New Date Entry
+					</h2>
 					<p className="text-base-content/70 mt-1">
-						Add a new birthday to track
+						Add a new date to track for practical purposes
 					</p>
 				</div>
 				<form onSubmit={handleSubmit} className="space-y-6">
@@ -66,9 +68,7 @@ function AddBirthday() {
 					</div>
 					<div className="form-control">
 						<label htmlFor="gregorianDate" className="label">
-							<span className="label-text font-medium">
-								Birthday (Gregorian)
-							</span>
+							<span className="label-text font-medium">Date (Gregorian)</span>
 						</label>
 						<input
 							type="date"
@@ -100,7 +100,7 @@ function AddBirthday() {
 						className="btn btn-primary w-full btn-lg"
 						data-testid="submit-button"
 					>
-						Add Birthday
+						Add Date
 					</button>
 				</form>
 			</div>
