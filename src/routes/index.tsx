@@ -1,38 +1,27 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useEffect, useMemo, useState } from 'react'
 import { Layout } from '../components/Layout'
-import { LocalStorageService } from '../services/LocalStorageService'
-import type { BirthdayEvent } from '../services/types'
-import {
-	displayGregorianDate,
-	displayHijriDate,
-	getAge,
-	getHijriDate,
-	getNextBirthday,
-} from '../utils/dates'
+import { CalendarFilterTabs } from '../components/CalendarFilterTabs'
+import { TimelineSectionComponent } from '../components/TimelineSection'
+import { HijriDateDisplay } from '../components/HijriDateDisplay'
+import { useTimelineEvents } from '../hooks/useTimelineEvents'
 
 export const Route = createFileRoute('/')({
 	component: BirthdayList,
 })
 
 function BirthdayList() {
-	const [events, setEvents] = useState<BirthdayEvent[]>([])
-	const storageService = useMemo(() => new LocalStorageService(), [])
-
-	useEffect(() => {
-		const storedEvents = storageService.getEvents()
-		const sortedEvents = storedEvents.sort((a, b) => {
-			const nextBirthdayA = getNextBirthday(a.gregorianDate)
-			const nextBirthdayB = getNextBirthday(b.gregorianDate)
-			return nextBirthdayA.since(nextBirthdayB).total({ unit: 'day' })
-		})
-		setEvents(sortedEvents)
-	}, [storageService])
+	const {
+		timelineSections,
+		activeFilter,
+		handleFilterChange,
+		eventCounts,
+		isEmpty,
+	} = useTimelineEvents()
 
 	return (
 		<Layout title="Hijri Birthday">
 			<div className="container p-4 mx-auto">
-				{events.length === 0 ? (
+				{isEmpty ? (
 					<div className="hero bg-base-200 min-h-[calc(100vh-4rem)]">
 						<div className="hero-content text-center">
 							<div className="max-w-md">
@@ -53,54 +42,53 @@ function BirthdayList() {
 				) : (
 					<>
 						<div className="mb-6">
-							<h2 className="text-2xl font-bold text-base-content">
-								Upcoming Birthdays
-							</h2>
-							<p className="text-base-content/70 mt-1">
-								{events.length} birthday{events.length !== 1 ? 's' : ''} tracked
+							<h1 className="text-3xl font-bold text-base-content mb-2">
+								🎂 Upcoming Birthdays
+							</h1>
+							<p className="text-base-content/70">
+								Track birthdays in both Gregorian and Hijri calendars
 							</p>
 						</div>
-						<div className="grid gap-4 pb-20">
-							{events.map((event) => (
-								<div
-									key={event.id}
-									className="card bg-base-100 shadow-lg border border-base-300"
-									data-testid="event-card"
-								>
-									<div className="card-body p-4">
-										<h3 className="card-title text-xl" data-testid="event-name">
-											{event.name}
-										</h3>
-										<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-											<div className="bg-base-200 p-3 rounded-lg">
-												<p className="font-semibold text-sm text-base-content/70 uppercase tracking-wide">
-													Gregorian
-												</p>
-												<p className="text-lg font-medium">
-													{displayGregorianDate(event.gregorianDate)}
-												</p>
-												<p className="text-sm text-base-content/70">
-													Age: {getAge(event.gregorianDate)}
-												</p>
-											</div>
-											<div className="bg-base-200 p-3 rounded-lg">
-												<p className="font-semibold text-sm text-base-content/70 uppercase tracking-wide">
-													Hijri
-												</p>
-												<p className="text-lg font-medium">
-													{displayHijriDate(getHijriDate(event.gregorianDate))}
-												</p>
-												<p className="text-sm text-base-content/70">
-													Age: {getAge(getHijriDate(event.gregorianDate))}
-												</p>
-											</div>
-										</div>
-									</div>
+
+						<HijriDateDisplay />
+
+						<CalendarFilterTabs
+							activeFilter={activeFilter}
+							onFilterChange={handleFilterChange}
+							gregorianCount={eventCounts.gregorian}
+							hijriCount={eventCounts.hijri}
+							bothCount={eventCounts.both}
+						/>
+
+						<div className="space-y-8 pb-20 transition-all duration-300 ease-in-out">
+							{timelineSections.length === 0 ? (
+								<div className="text-center py-12 animate-in fade-in duration-500">
+									<div className="text-4xl mb-4">📅</div>
+									<h3 className="text-xl font-semibold mb-2">
+										No upcoming birthdays
+									</h3>
+									<p className="text-base-content/70">
+										No birthdays found for the selected calendar filter.
+									</p>
 								</div>
-							))}
+							) : (
+								timelineSections.map((section, index) => (
+									<div
+										key={`${section.timeRange}-${activeFilter}`}
+										className="animate-in fade-in slide-in-from-bottom-4 duration-500"
+										style={{ animationDelay: `${index * 100}ms` }}
+									>
+										<TimelineSectionComponent
+											section={section}
+											activeFilter={activeFilter}
+										/>
+									</div>
+								))
+							)}
 						</div>
 					</>
 				)}
+
 				<Link
 					to="/add"
 					className="btn btn-primary btn-circle fixed bottom-6 right-6 shadow-lg z-40"

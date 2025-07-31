@@ -50,3 +50,86 @@ export function displayHijriDate(hijriDate: Temporal.PlainDate): string {
 		year: 'numeric',
 	})
 }
+
+// New countdown and timeline utilities
+export function getDaysUntilBirthday(birthDate: Temporal.PlainDate): number {
+	const nextBirthday = getNextBirthday(birthDate)
+	const today = Temporal.Now.plainDateISO().withCalendar(birthDate.calendarId)
+	return nextBirthday.since(today).total({ unit: 'day' })
+}
+
+export function getCountdownColor(
+	daysUntil: number,
+): 'error' | 'warning' | 'success' {
+	if (daysUntil <= 7) return 'error'
+	if (daysUntil <= 30) return 'warning'
+	return 'success'
+}
+
+export function getTimeRangeLabel(daysUntil: number): string {
+	if (daysUntil <= 7) return 'This Week'
+	if (daysUntil <= 30) return 'This Month'
+	if (daysUntil <= 90) return 'Next 3 Months'
+	return 'Rest of Year'
+}
+
+export function formatCountdown(daysUntil: number): string {
+	if (daysUntil === 0) return 'Today!'
+	if (daysUntil === 1) return '1 Day'
+	return `${Math.ceil(daysUntil)} Days`
+}
+
+export function getNextGregorianBirthday(
+	gregorianBirthDate: Temporal.PlainDate,
+): Temporal.PlainDate {
+	return getNextBirthday(gregorianBirthDate)
+}
+
+export function getNextHijriBirthday(
+	hijriBirthDate: Temporal.PlainDate,
+): Temporal.PlainDate {
+	return getNextBirthday(hijriBirthDate)
+}
+
+export function calculateGregorianAge(
+	gregorianBirthDate: Temporal.PlainDate,
+): number {
+	const nextBirthday = getNextGregorianBirthday(gregorianBirthDate)
+	return nextBirthday.since(gregorianBirthDate, { largestUnit: 'years' }).years
+}
+
+export function calculateHijriAge(hijriBirthDate: Temporal.PlainDate): number {
+	const nextBirthday = getNextHijriBirthday(hijriBirthDate)
+	return nextBirthday.since(hijriBirthDate, { largestUnit: 'years' }).years
+}
+
+// Current date utilities
+export function getCurrentHijriDate(): Temporal.PlainDate {
+	const today = Temporal.Now.plainDateISO()
+	return today.withCalendar('islamic-umalqura')
+}
+
+export function getCurrentGregorianDate(): Temporal.PlainDate {
+	return Temporal.Now.plainDateISO()
+}
+
+export function formatCurrentHijriDate(): string {
+	const hijriDate = getCurrentHijriDate()
+	return hijriDate.toLocaleString('en-US', {
+		calendar: 'islamic-umalqura',
+		weekday: 'long',
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	})
+}
+
+export function formatCurrentHijriDateShort(): string {
+	const hijriDate = getCurrentHijriDate()
+	return hijriDate.toLocaleString('en-US', {
+		calendar: 'islamic-umalqura',
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	})
+}

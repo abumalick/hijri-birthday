@@ -1,0 +1,5 @@
+export { MenuIcon } from './MenuIcon'
+export { HomeIcon } from './HomeIcon'
+export { AddIcon } from './AddIcon'
+export { SettingsIcon } from './SettingsIcon'
+export { AboutIcon } from './AboutIcon'
