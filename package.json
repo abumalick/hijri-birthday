@@ -11,7 +11,7 @@
     "test:unit": "vitest run",
     "test:e2e": "playwright test --config=playwright.config.ts",
     "lint": "biome check --write .",
-    "deploy": "wrangler deploy"
+    "deploy": "bun run build && wrangler deploy"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",
