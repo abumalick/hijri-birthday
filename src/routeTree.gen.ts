@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RecordedRouteImport } from './routes/recorded'
 import { Route as MonthsRouteImport } from './routes/months'
 import { Route as GuidanceRouteImport } from './routes/guidance'
 import { Route as AddRouteImport } from './routes/add'
 import { Route as IndexRouteImport } from './routes/index'
 
+const RecordedRoute = RecordedRouteImport.update({
+  id: '/recorded',
+  path: '/recorded',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MonthsRoute = MonthsRouteImport.update({
   id: '/months',
   path: '/months',
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/add': typeof AddRoute
   '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
+  '/recorded': typeof RecordedRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/add': typeof AddRoute
   '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
+  '/recorded': typeof RecordedRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/add': typeof AddRoute
   '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
+  '/recorded': typeof RecordedRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/add' | '/guidance' | '/months'
+  fullPaths: '/' | '/add' | '/guidance' | '/months' | '/recorded'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/add' | '/guidance' | '/months'
-  id: '__root__' | '/' | '/add' | '/guidance' | '/months'
+  to: '/' | '/add' | '/guidance' | '/months' | '/recorded'
+  id: '__root__' | '/' | '/add' | '/guidance' | '/months' | '/recorded'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,10 +76,18 @@ export interface RootRouteChildren {
   AddRoute: typeof AddRoute
   GuidanceRoute: typeof GuidanceRoute
   MonthsRoute: typeof MonthsRoute
+  RecordedRoute: typeof RecordedRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/recorded': {
+      id: '/recorded'
+      path: '/recorded'
+      fullPath: '/recorded'
+      preLoaderRoute: typeof RecordedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/months': {
       id: '/months'
       path: '/months'
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   AddRoute: AddRoute,
   GuidanceRoute: GuidanceRoute,
   MonthsRoute: MonthsRoute,
+  RecordedRoute: RecordedRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

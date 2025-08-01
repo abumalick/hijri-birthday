@@ -8,6 +8,7 @@ import {
 	AboutIcon,
 	CalendarIcon,
 	GuidanceIcon,
+	RecordedDatesIcon,
 } from './icons'
 
 interface LayoutProps {
@@ -84,6 +85,16 @@ export function Layout({ title, children }: LayoutProps) {
 							>
 								<AddIcon />
 								Add Date
+							</Link>
+						</li>
+						<li>
+							<Link
+								to="/recorded"
+								className="flex items-center gap-3"
+								activeProps={{ className: 'active' }}
+							>
+								<RecordedDatesIcon />
+								Recorded Dates
 							</Link>
 						</li>
 						<li>
