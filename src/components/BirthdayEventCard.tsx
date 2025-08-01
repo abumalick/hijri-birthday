@@ -24,17 +24,26 @@ export function DateEventCard({ event, className = '' }: DateEventCardProps) {
 	return (
 		<div
 			className={`card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-shadow ${className}`}
+			data-testid="event-card"
 		>
 			<div className="card-body p-4">
 				<div className="flex items-start justify-between mb-3">
 					<div className="flex items-center gap-3">
 						<span className="text-2xl">{genderEmoji}</span>
 						<div>
-							<h3 className="card-title text-lg font-bold">{event.name}</h3>
+							<h3
+								className="card-title text-lg font-bold"
+								data-testid="event-name"
+							>
+								{event.name}
+							</h3>
 							<div className="flex items-center gap-2 mt-1">
 								<CalendarBadge calendarType={event.calendarType} />
 								{event.relationship && (
-									<span className="text-xs text-base-content/60">
+									<span
+										className="text-xs text-base-content/60"
+										data-testid="event-relationship"
+									>
 										{event.relationship}
 									</span>
 								)}

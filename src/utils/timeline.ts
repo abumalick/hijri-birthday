@@ -8,7 +8,6 @@ import type {
 } from '../services/types'
 import {
 	getHijriDate,
-	getDaysUntilBirthday,
 	getTimeUntilBirthday,
 	getNextGregorianBirthday,
 	getNextHijriBirthday,
@@ -25,14 +24,21 @@ export function convertLegacyEventToPerson(event: BirthdayEvent): Person {
 		event.id,
 		event.name,
 		event.gregorianDate,
+		event.relationship,
 	)
-	const hijriEvent = generateHijriEvent(event.id, event.name, hijriBirthDate)
+	const hijriEvent = generateHijriEvent(
+		event.id,
+		event.name,
+		hijriBirthDate,
+		event.relationship,
+	)
 
 	return {
 		id: event.id,
 		name: event.name,
 		gregorianBirthDate: event.gregorianDate,
 		hijriBirthDate,
+		relationship: event.relationship,
 		gregorianEvent,
 		hijriEvent,
 	}
@@ -43,6 +49,7 @@ function generateGregorianEvent(
 	personId: string,
 	name: string,
 	gregorianBirthDate: Temporal.PlainDate,
+	relationship?: string,
 ): TimelineBirthdayEvent {
 	const nextBirthday = getNextGregorianBirthday(gregorianBirthDate)
 	const timeUntil = getTimeUntilBirthday(gregorianBirthDate)
@@ -58,6 +65,7 @@ function generateGregorianEvent(
 		daysUntilNext: timeUntil.totalDays, // Keep for backward compatibility
 		timeUntilNext: timeUntil, // New detailed time structure
 		ageOnNextBirthday: ageOnNext,
+		relationship,
 		reminderSet: false,
 	}
 }
@@ -67,6 +75,7 @@ function generateHijriEvent(
 	personId: string,
 	name: string,
 	hijriBirthDate: Temporal.PlainDate,
+	relationship?: string,
 ): TimelineBirthdayEvent {
 	const nextBirthday = getNextHijriBirthday(hijriBirthDate)
 	const timeUntil = getTimeUntilBirthday(hijriBirthDate)
@@ -82,6 +91,7 @@ function generateHijriEvent(
 		daysUntilNext: timeUntil.totalDays, // Keep for backward compatibility
 		timeUntilNext: timeUntil, // New detailed time structure
 		ageOnNextBirthday: ageOnNext,
+		relationship,
 		reminderSet: false,
 	}
 }

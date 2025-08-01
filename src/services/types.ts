@@ -6,6 +6,7 @@ export type BirthdayEvent = {
 	id: string
 	name: string
 	gregorianDate: Temporal.PlainDate
+	relationship?: string
 }
 
 // New dual calendar system types

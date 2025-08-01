@@ -37,7 +37,10 @@ export function CalendarFilterTabs({
 	]
 
 	return (
-		<div className="tabs tabs-boxed bg-base-200 mb-6">
+		<div
+			className="tabs tabs-boxed bg-base-200 mb-6"
+			data-testid="calendar-filter-tabs"
+		>
 			{tabs.map((tab) => (
 				<button
 					key={tab.key}
@@ -46,6 +49,7 @@ export function CalendarFilterTabs({
 						activeFilter === tab.key ? 'tab-active' : ''
 					} ${tab.colorClass} hover:scale-105`}
 					onClick={() => onFilterChange(tab.key)}
+					data-testid={`calendar-filter-${tab.key}`}
 				>
 					<span>{tab.label}</span>
 					<span className="badge badge-sm badge-neutral transition-all duration-200">
