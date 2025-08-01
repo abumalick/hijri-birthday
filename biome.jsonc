@@ -9,12 +9,24 @@
 		"ignoreUnknown": false
 	},
 	"formatter": {
-		"includes": ["**", "!src/routeTree.gen.ts"],
+		"includes": [
+			"**",
+			"!src/routeTree.gen.ts",
+			"!node_modules/**",
+			"!dist/**",
+			".tanstack/**"
+		],
 		"enabled": true,
 		"indentStyle": "tab"
 	},
 	"linter": {
-		"includes": ["**", "!src/routeTree.gen.ts"],
+		"includes": [
+			"**",
+			"!src/routeTree.gen.ts",
+			"!node_modules/**",
+			"!dist/**",
+			".tanstack/**"
+		],
 		"enabled": true,
 		"rules": {
 			"recommended": true
