@@ -1,4 +1,4 @@
-import type { CalendarType } from '../services/types'
+import type { CalendarType } from '../../../services/types'
 
 interface CalendarFilterTabsProps {
 	activeFilter: CalendarType | 'both'

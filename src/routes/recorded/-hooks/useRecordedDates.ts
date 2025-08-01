@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 import { Temporal } from '@js-temporal/polyfill'
-import { LocalStorageService } from '../services/LocalStorageService'
+import { LocalStorageService } from '../../../services/LocalStorageService'
 import {
 	calculateGregorianAge,
 	calculateHijriAge,
 	getHijriDate,
-} from '../utils/dates'
-import type { BirthdayEvent, CalendarType } from '../services/types'
+} from '../../../utils/dates'
+import type { BirthdayEvent, CalendarType } from '../../../services/types'
 
 export type SortOption = 'name' | 'name-desc' | 'date-asc' | 'date-desc'
 

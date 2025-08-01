@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { LocalStorageService } from '../services/LocalStorageService'
-import type { BirthdayEvent, CalendarType } from '../services/types'
+import { LocalStorageService } from '../../../services/LocalStorageService'
+import type { BirthdayEvent, CalendarType } from '../../../services/types'
 import {
 	convertLegacyEventToPerson,
 	getTimelineEvents,
-} from '../utils/timeline'
+} from '../../../utils/timeline'
 
 const FILTER_STORAGE_KEY = 'timeline-filter-preference'
 

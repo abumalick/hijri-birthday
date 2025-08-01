@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Layout } from '../components/Layout'
-import { RecordedDatesControls } from '../components/RecordedDatesControls'
-import { RecordedDateCard } from '../components/RecordedDateCard'
-import { useRecordedDates } from '../hooks/useRecordedDates'
+import { Layout } from '../../components/Layout'
+import { RecordedDatesControls } from './-components/RecordedDatesControls'
+import { RecordedDateCard } from './-components/RecordedDateCard'
+import { useRecordedDates } from './-hooks/useRecordedDates'
 
 export const Route = createFileRoute('/recorded')({
 	component: RecordedDatesScreen,

@@ -1,4 +1,4 @@
-import type { SortOption } from '../hooks/useRecordedDates'
+import type { SortOption } from '../-hooks/useRecordedDates'
 
 interface RecordedDatesControlsProps {
 	sortBy: SortOption

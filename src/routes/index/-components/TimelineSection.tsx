@@ -1,5 +1,5 @@
-import type { TimelineSection, CalendarType } from '../services/types'
-import { DateEventCard } from './BirthdayEventCard'
+import type { TimelineSection, CalendarType } from '../../../services/types'
+import { DateEventCard } from '../../../components/BirthdayEventCard'
 
 interface TimelineSectionProps {
 	section: TimelineSection

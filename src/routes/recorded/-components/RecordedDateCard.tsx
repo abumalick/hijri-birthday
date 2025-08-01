@@ -1,5 +1,5 @@
-import { displayGregorianDate, displayHijriDate } from '../utils/dates'
-import type { RecordedDateEntry } from '../hooks/useRecordedDates'
+import { displayGregorianDate, displayHijriDate } from '../../../utils/dates'
+import type { RecordedDateEntry } from '../-hooks/useRecordedDates'
 
 interface RecordedDateCardProps {
 	entry: RecordedDateEntry

@@ -2,7 +2,7 @@ import {
 	formatCurrentHijriDateShort,
 	getCurrentGregorianDate,
 	getCurrentHijriDate,
-} from '../utils/dates'
+} from '../../../utils/dates'
 
 export function HijriDateDisplay() {
 	const hijriDate = getCurrentHijriDate()
