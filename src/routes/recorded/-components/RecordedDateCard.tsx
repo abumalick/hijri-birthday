@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import { displayGregorianDate, displayHijriDate } from '../../../utils/dates'
 import type { RecordedDateEntry } from '../-hooks/useRecordedDates'
 
@@ -50,17 +51,18 @@ export function RecordedDateCard({ entry }: RecordedDateCardProps) {
 						</div>
 					</div>
 
-					{/* Calendar Type Badge */}
-					<div className="flex flex-col items-end gap-2">
-						<div
-							className={`badge ${
-								entry.calendarType === 'gregorian'
-									? 'badge-primary'
-									: 'badge-secondary'
-							}`}
+					{/* Top-right corner actions */}
+					<div className="flex items-start">
+						{/* Edit Button - Small icon in corner */}
+						<Link
+							to="/recorded/$id/edit"
+							params={{ id: entry.id }}
+							className="btn btn-ghost btn-xs size-8 p-0 hover:bg-base-200 opacity-60 hover:opacity-100 transition-opacity"
+							data-testid={`edit-button-${entry.id}`}
+							title="Edit entry"
 						>
-							{entry.calendarType === 'gregorian' ? '📅' : '🌙'}
-						</div>
+							✏️
+						</Link>
 					</div>
 				</div>
 			</div>

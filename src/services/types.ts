@@ -53,6 +53,8 @@ export interface TimelineFilter {
 
 export interface StorageService {
 	getEvents: () => BirthdayEvent[]
+	getEventById: (id: string) => BirthdayEvent | null
 	addEvent: (event: Omit<BirthdayEvent, 'id'>) => void
-	// TODO: Add methods for updating and deleting events
+	updateEvent: (id: string, updates: Partial<Omit<BirthdayEvent, 'id'>>) => void
+	deleteEvent: (id: string) => void
 }

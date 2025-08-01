@@ -28,8 +28,6 @@ export function useRecordedDates() {
 	const events = storageService.getEvents()
 
 	const recordedDates = useMemo(() => {
-		const today = Temporal.Now.plainDateISO()
-
 		// Convert events to recorded date entries
 		const entries: RecordedDateEntry[] = events.map((event: BirthdayEvent) => {
 			const gregorianAge = calculateGregorianAge(event.gregorianDate)

@@ -12,8 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MonthsRouteImport } from './routes/months'
 import { Route as GuidanceRouteImport } from './routes/guidance'
 import { Route as AddRouteImport } from './routes/add'
-import { Route as RecordedRouteRouteImport } from './routes/recorded/route'
 import { Route as IndexRouteRouteImport } from './routes/index/route'
+import { Route as RecordedIndexRouteImport } from './routes/recorded/index'
+import { Route as RecordedIdEditRouteImport } from './routes/recorded/$id.edit'
 
 const MonthsRoute = MonthsRouteImport.update({
   id: '/months',
@@ -30,53 +31,81 @@ const AddRoute = AddRouteImport.update({
   path: '/add',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RecordedRouteRoute = RecordedRouteRouteImport.update({
-  id: '/recorded',
-  path: '/recorded',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRouteRoute = IndexRouteRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RecordedIndexRoute = RecordedIndexRouteImport.update({
+  id: '/recorded/',
+  path: '/recorded/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecordedIdEditRoute = RecordedIdEditRouteImport.update({
+  id: '/recorded/$id/edit',
+  path: '/recorded/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
-  '/recorded': typeof RecordedRouteRoute
   '/add': typeof AddRoute
   '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
+  '/recorded': typeof RecordedIndexRoute
+  '/recorded/$id/edit': typeof RecordedIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
-  '/recorded': typeof RecordedRouteRoute
   '/add': typeof AddRoute
   '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
+  '/recorded': typeof RecordedIndexRoute
+  '/recorded/$id/edit': typeof RecordedIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
-  '/recorded': typeof RecordedRouteRoute
   '/add': typeof AddRoute
   '/guidance': typeof GuidanceRoute
   '/months': typeof MonthsRoute
+  '/recorded/': typeof RecordedIndexRoute
+  '/recorded/$id/edit': typeof RecordedIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/recorded' | '/add' | '/guidance' | '/months'
+  fullPaths:
+    | '/'
+    | '/add'
+    | '/guidance'
+    | '/months'
+    | '/recorded'
+    | '/recorded/$id/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/recorded' | '/add' | '/guidance' | '/months'
-  id: '__root__' | '/' | '/recorded' | '/add' | '/guidance' | '/months'
+  to:
+    | '/'
+    | '/add'
+    | '/guidance'
+    | '/months'
+    | '/recorded'
+    | '/recorded/$id/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/add'
+    | '/guidance'
+    | '/months'
+    | '/recorded/'
+    | '/recorded/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
-  RecordedRouteRoute: typeof RecordedRouteRoute
   AddRoute: typeof AddRoute
   GuidanceRoute: typeof GuidanceRoute
   MonthsRoute: typeof MonthsRoute
+  RecordedIndexRoute: typeof RecordedIndexRoute
+  RecordedIdEditRoute: typeof RecordedIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -102,13 +131,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AddRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/recorded': {
-      id: '/recorded'
-      path: '/recorded'
-      fullPath: '/recorded'
-      preLoaderRoute: typeof RecordedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -116,15 +138,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/recorded/': {
+      id: '/recorded/'
+      path: '/recorded'
+      fullPath: '/recorded'
+      preLoaderRoute: typeof RecordedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recorded/$id/edit': {
+      id: '/recorded/$id/edit'
+      path: '/recorded/$id/edit'
+      fullPath: '/recorded/$id/edit'
+      preLoaderRoute: typeof RecordedIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
-  RecordedRouteRoute: RecordedRouteRoute,
   AddRoute: AddRoute,
   GuidanceRoute: GuidanceRoute,
   MonthsRoute: MonthsRoute,
+  RecordedIndexRoute: RecordedIndexRoute,
+  RecordedIdEditRoute: RecordedIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
