@@ -117,7 +117,7 @@ export function Layout({ title, children }: LayoutProps) {
 								Islamic Guidance
 							</Link>
 						</li>
-						<div className="divider" />
+						{/* <div className="divider" />
 						<li>
 							<button type="button" className="flex items-center gap-3">
 								<SettingsIcon />
@@ -129,7 +129,7 @@ export function Layout({ title, children }: LayoutProps) {
 								<AboutIcon />
 								About
 							</button>
-						</li>
+						</li> */}
 					</ul>
 				</aside>
 			</div>
