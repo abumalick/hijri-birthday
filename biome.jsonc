@@ -39,6 +39,13 @@
 		}
 	},
 	"assist": {
+		"includes": [
+			"**",
+			"!src/routeTree.gen.ts",
+			"!node_modules/**",
+			"!dist/**",
+			"!.tanstack/**"
+		],
 		"enabled": true,
 		"actions": {
 			"source": {
