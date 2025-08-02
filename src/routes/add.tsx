@@ -81,6 +81,11 @@ function AddDate() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 
+		// Prevent multiple submissions
+		if (isSubmitting) {
+			return
+		}
+
 		if (!validateForm()) {
 			return
 		}
@@ -94,7 +99,14 @@ function AddDate() {
 				gregorianDate: Temporal.PlainDate.from(gregorianDate),
 				relationship: relationship.trim() || undefined,
 			})
-			navigate({ to: '/' })
+
+			// Clear form state before navigation
+			setName('')
+			setGregorianDate('')
+			setRelationship('')
+
+			// Use replace to ensure proper navigation
+			navigate({ to: '/', replace: true })
 		} catch (error) {
 			let errorMsg =
 				error instanceof Error
@@ -175,6 +187,7 @@ function AddDate() {
 									className="label-text-alt text-error"
 									data-testid="name-error"
 									id="name-error"
+									role="alert"
 								>
 									{errors.name}
 								</span>
@@ -191,7 +204,6 @@ function AddDate() {
 							value={gregorianDate}
 							onChange={handleDateChange}
 							className={`input input-bordered w-full ${errors.gregorianDate ? 'input-error' : ''}`}
-							required
 							data-testid="gregorian-date-input"
 							aria-label="Select date"
 							aria-invalid={!!errors.gregorianDate}
@@ -205,6 +217,7 @@ function AddDate() {
 									className="label-text-alt text-error"
 									data-testid="date-error"
 									id="date-error"
+									role="alert"
 								>
 									{errors.gregorianDate}
 								</span>
@@ -233,10 +246,11 @@ function AddDate() {
 							placeholder="e.g., Friend, Family, Colleague"
 							data-testid="relationship-input"
 							aria-label="Enter relationship"
+							tabIndex={0}
 						/>
 					</div>
 					{hijriDate && (
-						<div className="alert alert-info">
+						<div className="alert alert-info" tabIndex={-1}>
 							<div>
 								<h3 className="font-bold">Hijri Date Preview</h3>
 								<div className="text-xs" data-testid="hijri-date-preview">

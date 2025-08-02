@@ -14,7 +14,7 @@
 			"!src/routeTree.gen.ts",
 			"!node_modules/**",
 			"!dist/**",
-			".tanstack/**"
+			"!.tanstack/**"
 		],
 		"enabled": true,
 		"indentStyle": "tab"
@@ -25,7 +25,7 @@
 			"!src/routeTree.gen.ts",
 			"!node_modules/**",
 			"!dist/**",
-			".tanstack/**"
+			"!.tanstack/**"
 		],
 		"enabled": true,
 		"rules": {
