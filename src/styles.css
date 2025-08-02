@@ -3,69 +3,72 @@
 
 /* Mobile-first responsive design */
 @media (max-width: 768px) {
-  .container {
-    @apply px-4;
-  }
+	.container {
+		@apply px-4;
+	}
 }
 
 /* Ensure drawer works properly on mobile */
 .drawer-toggle:checked ~ .drawer-content .drawer-overlay {
-  @apply block;
+	@apply block;
 }
 
 /* Custom scrollbar for better mobile experience */
 ::-webkit-scrollbar {
-  width: 4px;
+	width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-base-200;
+	@apply bg-base-200;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-base-300 rounded-full;
+	@apply bg-base-300 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-base-content/20;
+	@apply bg-base-content/20;
 }
 
 /* Smooth transitions for mobile interactions */
 .drawer-side {
-  transition: transform 0.3s ease-in-out;
+	transition: transform 0.3s ease-in-out;
 }
 
 /* Ensure proper touch targets on mobile */
 .btn {
-  min-height: 44px;
+	min-height: 44px;
 }
 
 /* Safe area handling for mobile devices */
 @supports (padding: max(0px)) {
-  .navbar {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
+	.navbar {
+		padding-left: max(1rem, env(safe-area-inset-left));
+		padding-right: max(1rem, env(safe-area-inset-right));
+	}
 
-  .drawer-side aside {
-    padding-left: max(1rem, env(safe-area-inset-left));
-  }
+	.drawer-side aside {
+		padding-left: max(1rem, env(safe-area-inset-left));
+	}
 }
 
 /* Arabic font styling for Hijri months */
 .font-arabic {
-  font-family: 'Amiri', 'Noto Sans Arabic', 'Arabic Typesetting', serif;
-  direction: rtl;
-  text-align: right;
+	font-family: "Amiri", "Noto Sans Arabic", "Arabic Typesetting", serif;
+	direction: rtl;
+	text-align: right;
 }
 
 /* Hover effects for month cards */
 .card:hover {
-  transform: translateY(-2px);
+	transform: translateY(-2px);
 }
 
 /* Special styling for month badges */
-.badge-info, .badge-warning, .badge-success, .badge-secondary {
-  font-size: 0.75rem;
-  font-weight: 600;
+.badge-info,
+.badge-warning,
+.badge-success,
+.badge-secondary {
+	font-size: 0.75rem;
+	font-weight: 600;
 }

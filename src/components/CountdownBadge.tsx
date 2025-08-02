@@ -1,6 +1,6 @@
 import {
-	getCountdownColor,
 	formatCountdown,
+	getCountdownColor,
 	type TimeUntilBirthday,
 } from '../utils/dates'
 

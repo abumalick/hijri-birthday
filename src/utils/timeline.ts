@@ -1,19 +1,19 @@
-import { Temporal } from '@js-temporal/polyfill'
+import type { Temporal } from '@js-temporal/polyfill'
 import type {
 	BirthdayEvent,
-	TimelineBirthdayEvent,
-	Person,
-	TimelineSection,
 	CalendarType,
+	Person,
+	TimelineBirthdayEvent,
+	TimelineSection,
 } from '../services/types'
 import {
-	getHijriDate,
-	getTimeUntilBirthday,
-	getNextGregorianBirthday,
-	getNextHijriBirthday,
 	calculateGregorianAge,
 	calculateHijriAge,
+	getHijriDate,
+	getNextGregorianBirthday,
+	getNextHijriBirthday,
 	getTimeRangeLabel,
+	getTimeUntilBirthday,
 } from './dates'
 
 // Convert legacy BirthdayEvent to Person with dual events

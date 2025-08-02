@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Layout } from '../../components/Layout'
 import { CalendarFilterTabs } from './-components/CalendarFilterTabs'
-import { TimelineSectionComponent } from './-components/TimelineSection'
 import { HijriDateDisplay } from './-components/HijriDateDisplay'
+import { TimelineSectionComponent } from './-components/TimelineSection'
 import { useTimelineEvents } from './-hooks/useTimelineEvents'
 
 export const Route = createFileRoute('/')({

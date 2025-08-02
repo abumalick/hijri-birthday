@@ -3,6 +3,16 @@ import type { BirthdayEvent, StorageService } from './types'
 
 const STORAGE_KEY = 'birthdayEvents'
 
+/**
+ * Interface for stored event data in localStorage
+ */
+interface StoredBirthdayEvent {
+	id: string
+	name: string
+	gregorianDate: string
+	relationship?: string
+}
+
 export class LocalStorageService implements StorageService {
 	getEvents(): BirthdayEvent[] {
 		try {
@@ -10,7 +20,7 @@ export class LocalStorageService implements StorageService {
 			if (!eventsJson) {
 				return []
 			}
-			const events = JSON.parse(eventsJson) as any[]
+			const events = JSON.parse(eventsJson) as StoredBirthdayEvent[]
 			return events.map((event) => ({
 				...event,
 				gregorianDate: Temporal.PlainDate.from(event.gregorianDate),

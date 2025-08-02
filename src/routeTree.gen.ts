@@ -9,12 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MonthsRouteImport } from './routes/months'
-import { Route as GuidanceRouteImport } from './routes/guidance'
 import { Route as AddRouteImport } from './routes/add'
+import { Route as GuidanceRouteImport } from './routes/guidance'
 import { Route as IndexRouteRouteImport } from './routes/index/route'
-import { Route as RecordedIndexRouteImport } from './routes/recorded/index'
+import { Route as MonthsRouteImport } from './routes/months'
 import { Route as RecordedIdEditRouteImport } from './routes/recorded/$id.edit'
+import { Route as RecordedIndexRouteImport } from './routes/recorded/index'
 
 const MonthsRoute = MonthsRouteImport.update({
   id: '/months',

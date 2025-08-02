@@ -1,7 +1,7 @@
 import type { TimelineBirthdayEvent } from '../services/types'
+import { displayGregorianDate, displayHijriDate } from '../utils/dates'
 import { CalendarBadge } from './CalendarBadge'
 import { CountdownBadge } from './CountdownBadge'
-import { displayGregorianDate, displayHijriDate } from '../utils/dates'
 
 interface DateEventCardProps {
 	event: TimelineBirthdayEvent

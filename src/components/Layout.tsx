@@ -1,13 +1,13 @@
 import { Link } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import {
-	MenuIcon,
-	HomeIcon,
 	AddIcon,
 	// SettingsIcon,
 	// AboutIcon,
 	CalendarIcon,
 	GuidanceIcon,
+	HomeIcon,
+	MenuIcon,
 	RecordedDatesIcon,
 } from './icons'
 

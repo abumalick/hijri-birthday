@@ -1,5 +1,5 @@
 import { Temporal } from '@js-temporal/polyfill'
-import { createFileRoute, useNavigate, notFound } from '@tanstack/react-router'
+import { createFileRoute, notFound, useNavigate } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 import { Layout } from '../../components/Layout'
 import { LocalStorageService } from '../../services/LocalStorageService'

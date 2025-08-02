@@ -1,5 +1,5 @@
-import type { TimelineSection, CalendarType } from '../../../services/types'
 import { DateEventCard } from '../../../components/BirthdayEventCard'
+import type { CalendarType, TimelineSection } from '../../../services/types'
 
 interface TimelineSectionProps {
 	section: TimelineSection
@@ -19,7 +19,6 @@ export function TimelineSectionComponent({
 				return section.gregorianEvents
 			case 'hijri':
 				return section.hijriEvents
-			case 'both':
 			default:
 				return section.combinedEvents
 		}

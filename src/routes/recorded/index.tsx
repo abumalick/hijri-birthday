@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Layout } from '../../components/Layout'
-import { RecordedDatesControls } from './-components/RecordedDatesControls'
 import { RecordedDateCard } from './-components/RecordedDateCard'
+import { RecordedDatesControls } from './-components/RecordedDatesControls'
 import { useRecordedDates } from './-hooks/useRecordedDates'
 
 export const Route = createFileRoute('/recorded/')({
@@ -90,23 +90,23 @@ function RecordedDatesScreen() {
 
 				{/* Floating Action Button */}
 				<Link
-					to='/add'
+					to="/add"
 					className="btn btn-primary btn-circle fixed bottom-6 right-6 shadow-lg z-40"
 					data-testid="add-event-button"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						className="w-6 h-6"
-						fill='none'
+						fill="none"
 						viewBox="0 0 24 24"
 						stroke="currentColor"
 					>
 						<title>Add Event</title>
 						<path
-							strokeLinecap='round'
+							strokeLinecap="round"
 							strokeLinejoin="round"
-							strokeWidth='2'
-							d='M12 6v12m6-6H6'
+							strokeWidth="2"
+							d="M12 6v12m6-6H6"
 						/>
 					</svg>
 				</Link>
