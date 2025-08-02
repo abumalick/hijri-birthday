@@ -5,7 +5,7 @@ import { chromium } from '@playwright/test'
  * Global setup for Playwright tests
  * Ensures clean state before test execution
  */
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
 	console.log('🧪 Setting up global test environment...')
 
 	const browser = await chromium.launch()

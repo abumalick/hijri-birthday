@@ -5,7 +5,7 @@ import { test as base, expect } from '@playwright/test'
  */
 export interface DebugContext {
 	capturePageState(): Promise<PageState>
-	logTestStep(step: string, context?: any): Promise<void>
+	logTestStep(step: string, context?: unknown): Promise<void>
 	logError(error: Error, context: string): Promise<void>
 }
 
@@ -62,7 +62,7 @@ export const test = base.extend<{ debugContext: DebugContext }>({
 				}
 			},
 
-			async logTestStep(step: string, context?: any): Promise<void> {
+			async logTestStep(step: string, context?: unknown): Promise<void> {
 				const state = await this.capturePageState()
 				console.log(`🔍 [DEBUG] ${step}`, {
 					context,
