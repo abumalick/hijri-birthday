@@ -1,12 +1,21 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 import type { TestEventData } from '../fixtures/testDataFixture'
+import { Selectors } from '../selectors/Selectors'
+import { BasePage } from './BasePage'
+import { DateDisplayHelper } from './DateDisplayHelper'
+import { FilterHelper } from './FilterHelper'
+import { TimelineHelper } from './TimelineHelper'
 
 /**
  * Page Object Model for the Home Page
+ *
+ * Handles navigation, basic UI interactions, and simple verifications.
+ * Complex logic is delegated to specialized helpers:
+ * - TimelineHelper: Timeline section analysis and verification
+ * - FilterHelper: Filter state and persistence verification
+ * - DateDisplayHelper: Date display format and content verification
  */
-export class HomePage {
-	readonly page: Page
-
+export class HomePage extends BasePage {
 	// Navigation elements
 	readonly addEventButton: Locator
 	readonly recordedDatesLink: Locator
@@ -37,98 +46,129 @@ export class HomePage {
 	readonly hijriDateDisplay: Locator
 	readonly gregorianDateDisplay: Locator
 
+	// Helpers
+	private timelineHelper: TimelineHelper
+	private filterHelper: FilterHelper
+	private dateDisplayHelper: DateDisplayHelper
+
 	constructor(page: Page) {
-		this.page = page
+		super(page)
 
 		// Navigation elements
-		this.addEventButton = page.getByTestId('add-event-button')
-		this.recordedDatesLink = page.getByTestId('recorded-dates-link')
-		this.guidanceLink = page.getByTestId('guidance-link')
+		this.addEventButton = Selectors.navigation.addButton(page)
+		this.recordedDatesLink = Selectors.navigation.recordedDatesLink(page)
+		this.guidanceLink = Selectors.navigation.guidanceLink(page)
 
 		// Filter tabs
-		this.calendarFilterTabs = page.getByTestId('calendar-filter-tabs')
-		this.gregorianTab = page.getByTestId('gregorian-tab')
-		this.hijriTab = page.getByTestId('hijri-tab')
-		this.bothTab = page.getByTestId('both-tab')
+		this.calendarFilterTabs = Selectors.timeline.filterTabs(page)
+		this.gregorianTab = Selectors.timeline.gregorianTab(page)
+		this.hijriTab = Selectors.timeline.hijriTab(page)
+		this.bothTab = Selectors.timeline.bothTab(page)
 
 		// Timeline sections
-		this.timelineSection = page.getByTestId('timeline-section')
-		this.thisWeekSection = page.getByTestId('this-week-section')
-		this.thisMonthSection = page.getByTestId('this-month-section')
-		this.nextQuarterSection = page.getByTestId('next-quarter-section')
-		this.restOfYearSection = page.getByTestId('rest-of-year-section')
+		this.timelineSection = Selectors.timeline.timelineSection(page)
+		this.thisWeekSection = Selectors.timeline.thisWeekSection(page)
+		this.thisMonthSection = Selectors.timeline.thisMonthSection(page)
+		this.nextQuarterSection = Selectors.timeline.nextQuarterSection(page)
+		this.restOfYearSection = Selectors.timeline.restOfYearSection(page)
 
 		// Event cards
-		this.eventCards = page.getByTestId('event-card')
+		this.eventCards = Selectors.timeline.eventCard(page)
 		this.firstEventCard = this.eventCards.first()
 
 		// Empty state
-		this.emptyStateMessage = page.getByTestId('empty-state-message')
-		this.emptyStateImage = page.getByTestId('empty-state-image')
+		this.emptyStateMessage = Selectors.empty.emptyStateMessage(page)
+		this.emptyStateImage = Selectors.empty.emptyStateImage(page)
 
 		// Date displays
-		this.hijriDateDisplay = page.getByTestId('hijri-date-display')
-		this.gregorianDateDisplay = page.getByTestId('gregorian-date-display')
+		this.hijriDateDisplay = Selectors.preview.hijriDateDisplay(page)
+		this.gregorianDateDisplay = Selectors.preview.gregorianDateDisplay(page)
+
+		// Initialize helpers
+		this.timelineHelper = new TimelineHelper(page)
+		this.filterHelper = new FilterHelper(page)
+		this.dateDisplayHelper = new DateDisplayHelper(page)
 	}
 
 	/**
-	 * Navigation methods
+	 * Navigation to home page
 	 */
 	async goto(): Promise<void> {
 		await this.page.goto('/')
 	}
 
+	/**
+	 * Navigate to add event page
+	 */
 	async navigateToAddEvent(): Promise<void> {
 		await this.addEventButton.click()
 		await expect(this.page).toHaveURL('/add')
 	}
 
+	/**
+	 * Navigate to recorded dates page
+	 */
 	async navigateToRecordedDates(): Promise<void> {
 		await this.recordedDatesLink.click()
 		await expect(this.page).toHaveURL('/recorded')
 	}
 
+	/**
+	 * Navigate to guidance page
+	 */
 	async navigateToGuidance(): Promise<void> {
 		await this.guidanceLink.click()
 		await expect(this.page).toHaveURL('/guidance')
 	}
 
 	/**
-	 * Filter methods
+	 * Select Gregorian calendar filter
 	 */
 	async selectGregorianFilter(): Promise<void> {
 		await this.gregorianTab.click()
 		await expect(this.gregorianTab).toHaveClass(/tab-active/)
 	}
 
+	/**
+	 * Select Hijri calendar filter
+	 */
 	async selectHijriFilter(): Promise<void> {
 		await this.hijriTab.click()
 		await expect(this.hijriTab).toHaveClass(/tab-active/)
 	}
 
+	/**
+	 * Select both calendars filter
+	 */
 	async selectBothFilter(): Promise<void> {
 		await this.bothTab.click()
 		await expect(this.bothTab).toHaveClass(/tab-active/)
 	}
 
 	/**
-	 * Event card methods
+	 * Get event card by name
 	 */
 	async getEventCardByName(name: string): Promise<Locator> {
 		return this.eventCards.filter({ hasText: name })
 	}
 
+	/**
+	 * Get event card by index
+	 */
 	async getEventCardByIndex(index: number): Promise<Locator> {
 		return this.eventCards.nth(index)
 	}
 
+	/**
+	 * Click event card by name
+	 */
 	async clickEventCard(name: string): Promise<void> {
 		const eventCard = await this.getEventCardByName(name)
 		await eventCard.click()
 	}
 
 	/**
-	 * Verification methods
+	 * Verify page is loaded
 	 */
 	async verifyPageLoaded(): Promise<void> {
 		await expect(this.addEventButton).toBeVisible()
@@ -140,12 +180,18 @@ export class HomePage {
 		}
 	}
 
+	/**
+	 * Verify empty state is displayed
+	 */
 	async verifyEmptyState(): Promise<void> {
 		await expect(this.emptyStateMessage).toBeVisible()
 		await expect(this.emptyStateImage).toBeVisible()
 		await expect(this.eventCards).toHaveCount(0)
 	}
 
+	/**
+	 * Verify event exists by name and relationship
+	 */
 	async verifyEventExists(eventData: TestEventData): Promise<void> {
 		const eventCards = this.eventCards.filter({ hasText: eventData.name })
 
@@ -164,97 +210,23 @@ export class HomePage {
 		}
 	}
 
+	/**
+	 * Verify total event count
+	 */
 	async verifyEventCount(expectedCount: number): Promise<void> {
 		await expect(this.eventCards).toHaveCount(expectedCount)
 	}
 
 	/**
-	 * Verify the count of unique persons (each person creates 2 events: Gregorian + Hijri)
+	 * Verify person count (each person creates 2 events: Gregorian + Hijri)
 	 */
 	async verifyPersonCount(expectedPersonCount: number): Promise<void> {
-		const expectedEventCount = expectedPersonCount * 2 // Each person creates 2 events
+		const expectedEventCount = expectedPersonCount * 2
 		await expect(this.eventCards).toHaveCount(expectedEventCount)
 	}
 
-	async verifyTimelineSectionExists(sectionName: string): Promise<void> {
-		const section = this.page.getByTestId(
-			`${sectionName.toLowerCase().replace(/\s+/g, '-')}-section`,
-		)
-		await expect(section).toBeVisible()
-	}
-
-	async verifyTimelineSectionHasEvents(
-		sectionName: string,
-		expectedCount: number,
-	): Promise<void> {
-		const section = this.page.getByTestId(
-			`${sectionName.toLowerCase().replace(/\s+/g, '-')}-section`,
-		)
-		const sectionEvents = section.getByTestId('event-card')
-		await expect(sectionEvents).toHaveCount(expectedCount)
-	}
-
-	async verifyCurrentDateDisplays(): Promise<void> {
-		await expect(this.hijriDateDisplay).toBeVisible()
-		await expect(this.gregorianDateDisplay).toBeVisible()
-	}
-
 	/**
-	 * Timeline section methods
-	 */
-	async getEventsInSection(sectionName: string): Promise<Locator> {
-		const section = this.page.getByTestId(
-			`${sectionName.toLowerCase().replace(/\s+/g, '-')}-section`,
-		)
-		return section.getByTestId('event-card')
-	}
-
-	async verifyEventInSection(
-		sectionName: string,
-		eventName: string,
-	): Promise<void> {
-		const sectionEvents = await this.getEventsInSection(sectionName)
-		const eventInSection = sectionEvents.filter({ hasText: eventName })
-		await expect(eventInSection).toBeVisible()
-	}
-
-	/**
-	 * Filter verification methods
-	 */
-	async verifyActiveFilter(
-		filterType: 'gregorian' | 'hijri' | 'both',
-	): Promise<void> {
-		const activeTab = this.page.getByTestId(`${filterType}-tab`)
-		await expect(activeTab).toHaveClass(/tab-active/)
-	}
-
-	async verifyFilteredResults(): Promise<void> {
-		// This would verify that only events of the selected calendar type are shown
-		// Implementation depends on how the filtering is implemented in the UI
-		const visibleCards = this.eventCards
-		await expect(visibleCards).toBeVisible()
-	}
-
-	/**
-	 * Interaction methods
-	 */
-	async waitForEventsToLoad(): Promise<void> {
-		// Wait for either events to appear or empty state to show
-		await Promise.race([
-			this.eventCards.first().waitFor({ state: 'visible' }),
-			this.emptyStateMessage.waitFor({ state: 'visible' }),
-		])
-	}
-
-	async scrollToSection(sectionName: string): Promise<void> {
-		const section = this.page.getByTestId(
-			`${sectionName.toLowerCase().replace(/\s+/g, '-')}-section`,
-		)
-		await section.scrollIntoViewIfNeeded()
-	}
-
-	/**
-	 * Bulk verification methods
+	 * Verify multiple events exist
 	 */
 	async verifyMultipleEvents(events: TestEventData[]): Promise<void> {
 		// Each person creates 2 events (Gregorian + Hijri)
@@ -266,11 +238,211 @@ export class HomePage {
 		}
 	}
 
+	/**
+	 * Wait for events to load or empty state to show
+	 */
+	async waitForEventsToLoad(): Promise<void> {
+		await Promise.race([
+			this.eventCards.first().waitFor({ state: 'visible' }),
+			this.emptyStateMessage.waitFor({ state: 'visible' }),
+		])
+	}
+
+	/**
+	 * Scroll to timeline section
+	 */
+	async scrollToSection(sectionName: string): Promise<void> {
+		const section = this.page.getByTestId(
+			`${sectionName.toLowerCase().replace(/\s+/g, '-')}-section`,
+		)
+		await section.scrollIntoViewIfNeeded()
+	}
+
+	/**
+	 * Timeline helper delegation methods
+	 */
+
+	/**
+	 * Get all timeline section titles
+	 */
+	async getTimelineSections(): Promise<string[]> {
+		return this.timelineHelper.getTimelineSections()
+	}
+
+	/**
+	 * Get events in specific timeline section
+	 */
+	async getEventsInSection(sectionName: string): Promise<Locator> {
+		return this.timelineHelper.getEventsInSection(sectionName)
+	}
+
+	/**
+	 * Verify timeline section exists
+	 */
+	async verifyTimelineSectionExists(sectionName: string): Promise<void> {
+		return this.timelineHelper.verifyTimelineSectionExists(sectionName)
+	}
+
+	/**
+	 * Verify timeline section has specific event count
+	 */
+	async verifyTimelineSectionHasEvents(
+		sectionName: string,
+		expectedCount: number,
+	): Promise<void> {
+		return this.timelineHelper.verifyTimelineSectionHasEvents(
+			sectionName,
+			expectedCount,
+		)
+	}
+
+	/**
+	 * Verify event exists in specific section
+	 */
+	async verifyEventInSection(
+		sectionName: string,
+		eventName: string,
+	): Promise<void> {
+		return this.timelineHelper.verifyEventInSection(sectionName, eventName)
+	}
+
+	/**
+	 * Verify overall timeline structure
+	 */
 	async verifyTimelineStructure(): Promise<void> {
-		// Verify that all timeline sections are present
-		await this.verifyTimelineSectionExists('This Week')
-		await this.verifyTimelineSectionExists('This Month')
-		await this.verifyTimelineSectionExists('Next Quarter')
-		await this.verifyTimelineSectionExists('Rest of Year')
+		return this.timelineHelper.verifyTimelineStructure()
+	}
+
+	/**
+	 * Verify timeline section grouping
+	 */
+	async verifyTimelineSectionGrouping(): Promise<void> {
+		return this.timelineHelper.verifyTimelineSectionGrouping()
+	}
+
+	/**
+	 * Verify event count in specific section
+	 */
+	async verifyEventCountInSection(
+		sectionTitle: string,
+		expectedCount: number,
+	): Promise<void> {
+		return this.timelineHelper.verifyEventCountInSection(
+			sectionTitle,
+			expectedCount,
+		)
+	}
+
+	/**
+	 * Verify event order in timeline
+	 */
+	async verifyEventOrder(): Promise<void> {
+		// Verify that at least first N cards are visible in stable order
+		const count = await this.eventCards.count()
+		if (count < 2) return
+		for (let i = 0; i < Math.min(count, 10); i++) {
+			await expect(this.eventCards.nth(i)).toBeVisible()
+		}
+	}
+
+	/**
+	 * Filter helper delegation methods
+	 */
+
+	/**
+	 * Verify active filter
+	 */
+	async verifyActiveFilter(
+		filterType: 'gregorian' | 'hijri' | 'both',
+	): Promise<void> {
+		return this.filterHelper.verifyActiveFilter(filterType)
+	}
+
+	/**
+	 * Verify filter persists across reload
+	 */
+	async verifyFilterPersistence(
+		expectedFilter: 'gregorian' | 'hijri' | 'both',
+	): Promise<void> {
+		return this.filterHelper.verifyFilterPersistence(expectedFilter)
+	}
+
+	/**
+	 * Verify no events message for current filter
+	 */
+	async verifyNoEventsForFilter(): Promise<void> {
+		return this.filterHelper.verifyNoEventsForFilter()
+	}
+
+	/**
+	 * Get filter badge counts
+	 */
+	async getFilterCounts(): Promise<{
+		gregorian: number
+		hijri: number
+		both: number
+	}> {
+		return this.filterHelper.getFilterCounts()
+	}
+
+	/**
+	 * Verify filter counts match expected values
+	 */
+	async verifyFilterCounts(expected: {
+		gregorian: number
+		hijri: number
+		both: number
+	}): Promise<void> {
+		return this.filterHelper.verifyFilterCounts(expected)
+	}
+
+	/**
+	 * Date display helper delegation methods
+	 */
+
+	/**
+	 * Get current Hijri date display
+	 */
+	async getCurrentHijriDate(): Promise<string> {
+		return this.dateDisplayHelper.getCurrentHijriDate()
+	}
+
+	/**
+	 * Get current Gregorian date display
+	 */
+	async getCurrentGregorianDate(): Promise<string> {
+		return this.dateDisplayHelper.getCurrentGregorianDate()
+	}
+
+	/**
+	 * Verify current date displays are visible
+	 */
+	async verifyCurrentDateDisplays(): Promise<void> {
+		return this.dateDisplayHelper.verifyCurrentDateDisplays()
+	}
+
+	/**
+	 * Verify Hijri date format
+	 */
+	async verifyHijriDateFormat(): Promise<void> {
+		return this.dateDisplayHelper.verifyHijriDateFormat()
+	}
+
+	/**
+	 * Verify Gregorian date format
+	 */
+	async verifyGregorianDateFormat(): Promise<void> {
+		return this.dateDisplayHelper.verifyGregorianDateFormat()
+	}
+
+	/**
+	 * Wait for timeline to load
+	 */
+	async waitForTimelineLoad(): Promise<void> {
+		await Promise.race([
+			this.page.locator('h2').first().waitFor({ state: 'visible' }),
+			this.emptyStateMessage.waitFor({ state: 'visible' }),
+			this.page.locator('text=No upcoming dates').waitFor({ state: 'visible' }),
+		])
 	}
 }

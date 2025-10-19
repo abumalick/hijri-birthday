@@ -54,7 +54,7 @@ export class LocalStorageService implements StorageService {
 		const events = this.getEvents()
 		const eventIndex = events.findIndex((event) => event.id === id)
 
-		if (eventIndex === -1) {
+		if (!events[eventIndex]) {
 			throw new Error(`Event with id ${id} not found`)
 		}
 

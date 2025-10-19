@@ -97,14 +97,12 @@ function generateHijriEvent(
 }
 
 // Generate both events for a person
-export function generateBirthdayEvents(
-	person: Person,
-): TimelineBirthdayEvent[] {
+function generateBirthdayEvents(person: Person): TimelineBirthdayEvent[] {
 	return [person.gregorianEvent, person.hijriEvent]
 }
 
 // Group events into timeline sections
-export function groupEventsIntoSections(
+function groupEventsIntoSections(
 	events: TimelineBirthdayEvent[],
 ): TimelineSection[] {
 	const sections: { [key: string]: TimelineBirthdayEvent[] } = {
@@ -117,7 +115,9 @@ export function groupEventsIntoSections(
 	// Group events by time range
 	events.forEach((event) => {
 		const timeRange = getTimeRangeLabel(event.daysUntilNext)
-		sections[timeRange].push(event)
+		if (sections[timeRange]) {
+			sections[timeRange].push(event)
+		}
 	})
 
 	// Convert to TimelineSection objects
@@ -148,7 +148,7 @@ export function groupEventsIntoSections(
 }
 
 // Filter events by calendar type
-export function filterEventsByCalendar(
+function filterEventsByCalendar(
 	events: TimelineBirthdayEvent[],
 	calendarType: CalendarType | 'both',
 ): TimelineBirthdayEvent[] {

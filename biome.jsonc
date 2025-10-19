@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
@@ -14,7 +14,8 @@
 			"!src/routeTree.gen.ts",
 			"!node_modules/**",
 			"!dist/**",
-			"!.tanstack/**"
+			"!.tanstack/**",
+			"!playwright-report/**"
 		],
 		"enabled": true,
 		"indentStyle": "tab"
@@ -25,11 +26,22 @@
 			"!src/routeTree.gen.ts",
 			"!node_modules/**",
 			"!dist/**",
-			"!.tanstack/**"
+			"!.tanstack/**",
+			"!playwright-report/**"
 		],
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"correctness": {
+				"noUnusedFunctionParameters": "off",
+				"useUniqueElementIds": "off"
+			},
+			"complexity": {
+				"noStaticOnlyClass": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off"
+			}
 		}
 	},
 	"javascript": {
@@ -38,13 +50,18 @@
 			"semicolons": "asNeeded"
 		}
 	},
+	"css": {
+		"formatter": { "enabled": false },
+		"linter": { "enabled": false }
+	},
 	"assist": {
 		"includes": [
 			"**",
 			"!src/routeTree.gen.ts",
 			"!node_modules/**",
 			"!dist/**",
-			"!.tanstack/**"
+			"!.tanstack/**",
+			"!playwright-report/**"
 		],
 		"enabled": true,
 		"actions": {

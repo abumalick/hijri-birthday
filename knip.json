@@ -1,0 +1,22 @@
+{
+	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"entry": ["src/main.tsx"],
+	"project": ["src/**/*.{ts,tsx}", "e2e/**/*.{ts,js}"],
+	"paths": {
+		"@/*": ["./src/*"]
+	},
+	"ignore": ["src/routeTree.gen.ts"],
+	"ignoreDependencies": [
+		"@testing-library/dom",
+		"@testing-library/react",
+		"daisyui",
+		"tailwindcss"
+	],
+	"ignoreFiles": ["e2e/fixtures/debugFixture.ts"],
+	"vite": true,
+	"playwright": {
+		"config": "playwright.config.ts",
+		"entry": "**/*.spec.ts"
+	},
+	"vitest": true
+}

@@ -35,11 +35,11 @@ export default defineConfig({
 	],
 
 	/* Increased timeouts for complex interactions */
-	timeout: 60000,
+	timeout: 10000,
 
 	/* Enhanced expect configuration */
 	expect: {
-		timeout: 15000, // Increased for better reliability
+		// timeout: 5000, // Increased for better reliability
 		toHaveScreenshot: {
 			animations: 'disabled',
 			caret: 'hide',
@@ -67,8 +67,8 @@ export default defineConfig({
 		ignoreHTTPSErrors: true,
 
 		/* Increased timeouts for better reliability */
-		actionTimeout: 15000,
-		navigationTimeout: 30000,
+		// actionTimeout: 15000,
+		// navigationTimeout: 30000,
 
 		/* Enhanced context options for debugging */
 		contextOptions: {
@@ -115,7 +115,7 @@ export default defineConfig({
 		command: 'bun run dev',
 		url: 'http://localhost:3000',
 		reuseExistingServer: !process.env.CI,
-		timeout: 120000, // Increased timeout for server startup
+		// timeout: 120000, // Increased timeout for server startup
 		stdout: 'pipe',
 		stderr: 'pipe',
 	},

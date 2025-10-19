@@ -28,6 +28,7 @@ export function RecordedDatesControls({
 						className="input input-bordered flex-1"
 						value={searchQuery}
 						onChange={(e) => onSearchChange(e.target.value)}
+						data-testid="search-input"
 					/>
 					<button type="button" className="btn btn-square btn-ghost">
 						<svg
@@ -57,6 +58,7 @@ export function RecordedDatesControls({
 						className="select select-bordered select-sm"
 						value={sortBy}
 						onChange={(e) => onSortChange(e.target.value as SortOption)}
+						data-testid="sort-control"
 					>
 						<option value="name">Sort by Name (A-Z)</option>
 						<option value="name-desc">Sort by Name (Z-A)</option>

@@ -12,7 +12,7 @@ export interface TestEventData {
 	id?: string
 }
 
-export interface TestEventFactory {
+interface TestEventFactory {
 	createEvent(data: Partial<TestEventData>): TestEventData
 	createUpcomingEvent(daysUntil: number, name?: string): TestEventData
 	createHijriEvent(data: Partial<TestEventData>): TestEventData
@@ -39,7 +39,7 @@ export interface TestDataManager {
 /**
  * Stored event data structure in localStorage
  */
-export interface StoredEventData {
+interface StoredEventData {
 	id: string
 	name: string
 	gregorianDate: string
@@ -287,5 +287,3 @@ export const TestScenarios = {
 		]
 	},
 }
-
-export { testDataFixture as test }

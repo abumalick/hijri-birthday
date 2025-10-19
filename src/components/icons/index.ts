@@ -1,8 +1,6 @@
-export { AboutIcon } from './AboutIcon'
 export { AddIcon } from './AddIcon'
 export { CalendarIcon } from './CalendarIcon'
 export { GuidanceIcon } from './GuidanceIcon'
 export { HomeIcon } from './HomeIcon'
 export { MenuIcon } from './MenuIcon'
 export { RecordedDatesIcon } from './RecordedDatesIcon'
-export { SettingsIcon } from './SettingsIcon'

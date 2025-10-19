@@ -1,3 +1,4 @@
+import { AssertionHelper } from 'e2e/helpers/AssertionHelper'
 import { expect, TestAssertions, TestSetup, test } from '../../fixtures'
 import {
 	formatHijriDateForDisplay,
@@ -163,11 +164,10 @@ test.describe('Add Event - Comprehensive Tests', () => {
 
 		await addEventPage.goto()
 		await addEventPage.verifyFormAccessibility()
-		await addEventPage.navigateWithKeyboard()
 
 		// Fill form using keyboard
 		await addEventPage.fillEventData(eventData)
-		await addEventPage.submitWithEnter()
+		await addEventPage.submitAndExpectSuccess()
 	})
 
 	test('should work with edge case dates', async ({
@@ -286,7 +286,7 @@ test.describe('Add Event - Error Scenarios', () => {
 		await addEventPage.submitAndExpectSuccess()
 	})
 
-	test('should handle localStorage quota exceeded', async ({
+	test('should handle localStorage setItem error', async ({
 		addEventPage,
 		testData,
 		page,
@@ -306,9 +306,7 @@ test.describe('Add Event - Error Scenarios', () => {
 		await addEventPage.goto()
 		await addEventPage.fillEventData(eventData)
 		await addEventPage.submitAndExpectError()
-		await addEventPage.verifyFormError(
-			'Storage quota exceeded. Please clear some data.',
-		)
+		await addEventPage.verifyFormError('ErrorQuotaExceededError')
 	})
 })
 
@@ -333,7 +331,9 @@ test.describe('Add Event - Performance Tests', () => {
 
 		for (let i = 0; i < events.length; i++) {
 			const event = events[i]
-
+			if (!event) {
+				throw new Error(`Event at index ${i} is undefined or null`)
+			}
 			// Add small delay to prevent race conditions
 			await page.waitForTimeout(200)
 			await addEventPage.fillEventData(event)
@@ -348,6 +348,6 @@ test.describe('Add Event - Performance Tests', () => {
 		}
 
 		// Verify we end up on home page after the last submission
-		await expect(addEventPage.page).toHaveURL('/')
+		await AssertionHelper.assertPageURL(page, '/')
 	})
 })

@@ -1,19 +1,29 @@
+import { AssertionHelper } from '../helpers/AssertionHelper'
+import { FormHelper } from '../helpers/FormHelper'
 import { AddEventPage } from '../pages/AddEventPage'
+import { DateDisplayHelper } from '../pages/DateDisplayHelper'
+import { EditEventPage } from '../pages/EditEventPage'
+import { FilterHelper } from '../pages/FilterHelper'
 import { HomePage } from '../pages/HomePage'
-import type {
-	TestDataManager,
-	TestEventData,
-	TestEventFactory,
-} from './testDataFixture'
+import { RecordedDatesPage } from '../pages/RecordedDatesPage'
+import { TimelineHelper } from '../pages/TimelineHelper'
+import type { TestDataManager, TestEventData } from './testDataFixture'
 import { TestScenarios, testDataFixture } from './testDataFixture'
 
 /**
  * Combined fixture that provides all testing utilities
  */
-export interface TestFixtures {
+interface TestFixtures {
 	testData: TestDataManager
 	homePage: HomePage
 	addEventPage: AddEventPage
+	recordedDatesPage: RecordedDatesPage
+	editEventPage: EditEventPage
+	formHelper: FormHelper
+	assertionHelper: AssertionHelper
+	timelineHelper: TimelineHelper
+	filterHelper: FilterHelper
+	dateDisplayHelper: DateDisplayHelper
 }
 
 /**
@@ -31,6 +41,48 @@ export const test = testDataFixture.extend<Omit<TestFixtures, 'testData'>>({
 		const addEventPage = new AddEventPage(page)
 		await use(addEventPage)
 	},
+
+	// RecordedDatesPage fixture
+	recordedDatesPage: async ({ page }, use) => {
+		const recordedDatesPage = new RecordedDatesPage(page)
+		await use(recordedDatesPage)
+	},
+
+	// EditEventPage fixture
+	editEventPage: async ({ page }, use) => {
+		const editEventPage = new EditEventPage(page)
+		await use(editEventPage)
+	},
+
+	// FormHelper fixture
+	formHelper: async ({ page }, use) => {
+		const formHelper = new FormHelper()
+		await use(formHelper)
+	},
+
+	// AssertionHelper fixture
+	assertionHelper: async ({ page }, use) => {
+		const assertionHelper = new AssertionHelper()
+		await use(assertionHelper)
+	},
+
+	// TimelineHelper fixture
+	timelineHelper: async ({ page }, use) => {
+		const timelineHelper = new TimelineHelper(page)
+		await use(timelineHelper)
+	},
+
+	// FilterHelper fixture
+	filterHelper: async ({ page }, use) => {
+		const filterHelper = new FilterHelper(page)
+		await use(filterHelper)
+	},
+
+	// DateDisplayHelper fixture
+	dateDisplayHelper: async ({ page }, use) => {
+		const dateDisplayHelper = new DateDisplayHelper(page)
+		await use(dateDisplayHelper)
+	},
 })
 
 /**
@@ -42,7 +94,11 @@ export { expect } from '@playwright/test'
  * Export test scenarios and utilities for easy access
  */
 export { TestScenarios }
-export type { TestEventData, TestEventFactory } from './testDataFixture'
+
+/**
+ * Export new helpers for direct access
+ */
+export type { TestEventData } from './testDataFixture'
 
 /**
  * Common test setup utilities
@@ -93,114 +149,6 @@ export const TestSetup = {
 	async fullTimeline(testData: TestDataManager): Promise<void> {
 		const events = TestScenarios.fullTimeline(testData.factory)
 		await testData.seedStorage(events)
-	},
-}
-
-/**
- * Common test workflows
- */
-export const TestWorkflows = {
-	/**
-	 * Complete add event workflow
-	 */
-	async addEventWorkflow(
-		homePage: HomePage,
-		addEventPage: AddEventPage,
-		testData: TestDataManager,
-		eventData?: TestEventData,
-	): Promise<void> {
-		const event = eventData || testData.factory.createEvent({})
-
-		await homePage.goto()
-		await homePage.navigateToAddEvent()
-		await addEventPage.addEvent(event)
-		await homePage.verifyEventExists(event)
-	},
-
-	/**
-	 * Verify timeline structure workflow
-	 */
-	async verifyTimelineStructure(
-		homePage: HomePage,
-		testData: TestDataManager,
-	): Promise<void> {
-		await TestSetup.fullTimeline(testData)
-		await homePage.goto()
-		await homePage.verifyTimelineStructure()
-	},
-
-	/**
-	 * Filter testing workflow
-	 */
-	async testFiltering(
-		homePage: HomePage,
-		testData: TestDataManager,
-	): Promise<void> {
-		await TestSetup.mixedCalendars(testData)
-		await homePage.goto()
-
-		// Test Gregorian filter
-		await homePage.selectGregorianFilter()
-		await homePage.verifyActiveFilter('gregorian')
-
-		// Test Hijri filter
-		await homePage.selectHijriFilter()
-		await homePage.verifyActiveFilter('hijri')
-
-		// Test Both filter
-		await homePage.selectBothFilter()
-		await homePage.verifyActiveFilter('both')
-	},
-
-	/**
-	 * Form validation workflow
-	 */
-	async testFormValidation(addEventPage: AddEventPage): Promise<void> {
-		await addEventPage.goto()
-		await addEventPage.testValidationWorkflow()
-	},
-}
-
-/**
- * Test data generators for common scenarios
- */
-export const TestDataGenerators = {
-	/**
-	 * Generate event for tomorrow
-	 */
-	tomorrow(factory: TestEventFactory) {
-		return factory.createUpcomingEvent(1, 'Tomorrow Birthday')
-	},
-
-	/**
-	 * Generate event for next week
-	 */
-	nextWeek(factory: TestEventFactory) {
-		return factory.createUpcomingEvent(7, 'Next Week Birthday')
-	},
-
-	/**
-	 * Generate event for next month
-	 */
-	nextMonth(factory: TestEventFactory) {
-		return factory.createUpcomingEvent(30, 'Next Month Birthday')
-	},
-
-	/**
-	 * Generate Hijri event
-	 */
-	hijriEvent(factory: TestEventFactory) {
-		return factory.createHijriEvent({ name: 'Hijri Birthday' })
-	},
-
-	/**
-	 * Generate event with specific relationship
-	 */
-	withRelationship(factory: TestEventFactory, relationship: string) {
-		return factory.createEvent({
-			name: `${relationship} Birthday`,
-			relationship,
-		})
 	},
 }
 

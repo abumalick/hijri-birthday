@@ -46,12 +46,6 @@ export interface TimelineSection {
 	isEmpty: boolean
 }
 
-export interface TimelineFilter {
-	activeCalendar: CalendarType | 'both'
-	showUpcoming: boolean
-	timeRange: 'week' | 'month' | 'quarter' | 'year'
-}
-
 export interface StorageService {
 	getEvents: () => BirthdayEvent[]
 	getEventById: (id: string) => BirthdayEvent | null

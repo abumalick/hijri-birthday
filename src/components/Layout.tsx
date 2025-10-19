@@ -1,9 +1,7 @@
 import { Link } from '@tanstack/react-router'
-import type { ReactNode } from 'react'
+import { type ReactNode, useId } from 'react'
 import {
 	AddIcon,
-	// SettingsIcon,
-	// AboutIcon,
 	CalendarIcon,
 	GuidanceIcon,
 	HomeIcon,
@@ -17,17 +15,25 @@ interface LayoutProps {
 }
 
 export function Layout({ title, children }: LayoutProps) {
+	const drawerToggleId = useId()
+
 	return (
 		<div className="drawer">
-			<input id="drawer-toggle" type="checkbox" className="drawer-toggle" />
+			<input
+				id={drawerToggleId}
+				type="checkbox"
+				className="drawer-toggle"
+				data-testid="drawer-toggle"
+			/>
 			<div className="drawer-content flex flex-col">
 				{/* Navbar */}
 				<div className="navbar bg-primary text-primary-content sticky top-0 z-50">
 					<div className="navbar-start">
 						<label
-							htmlFor="drawer-toggle"
+							htmlFor={drawerToggleId}
 							className="btn btn-square btn-ghost"
 							aria-label="Open menu"
+							data-testid="drawer-toggle-label"
 						>
 							<MenuIcon />
 						</label>
@@ -47,7 +53,7 @@ export function Layout({ title, children }: LayoutProps) {
 			{/* Sidebar */}
 			<div className="drawer-side">
 				<label
-					htmlFor="drawer-toggle"
+					htmlFor={drawerToggleId}
 					className="drawer-overlay"
 					aria-label="Close menu"
 				/>
@@ -117,19 +123,6 @@ export function Layout({ title, children }: LayoutProps) {
 								Islamic Guidance
 							</Link>
 						</li>
-						{/* <div className="divider" />
-						<li>
-							<button type="button" className="flex items-center gap-3">
-								<SettingsIcon />
-								Settings
-							</button>
-						</li>
-						<li>
-							<button type="button" className="flex items-center gap-3">
-								<AboutIcon />
-								About
-							</button>
-						</li> */}
 					</ul>
 				</aside>
 			</div>

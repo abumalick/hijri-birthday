@@ -4,7 +4,7 @@ import { Temporal } from '@js-temporal/polyfill'
  * Test date utilities for generating consistent test data
  */
 
-export interface TestDateConfig {
+interface TestDateConfig {
 	daysFromToday?: number
 	monthsFromToday?: number
 	yearsFromToday?: number
@@ -14,9 +14,7 @@ export interface TestDateConfig {
 /**
  * Generate a test date relative to today
  */
-export function generateTestDate(
-	config: TestDateConfig = {},
-): Temporal.PlainDate {
+function generateTestDate(config: TestDateConfig = {}): Temporal.PlainDate {
 	const {
 		daysFromToday = 0,
 		monthsFromToday = 0,
@@ -40,7 +38,7 @@ export function generateTestDate(
 /**
  * Generate a birth date that will have a birthday in the specified number of days
  */
-export function generateBirthDateForUpcomingBirthday(
+function generateBirthDateForUpcomingBirthday(
 	daysUntilBirthday: number,
 	ageOnNextBirthday: number = 25,
 	calendar: 'gregorian' | 'hijri' = 'gregorian',
@@ -111,48 +109,10 @@ export function formatHijriDateForDisplay(
 }
 
 /**
- * Convert Gregorian date to expected display format
- */
-export function formatGregorianDateForDisplay(
-	gregorianDate: Temporal.PlainDate,
-): string {
-	return gregorianDate.toLocaleString('en-US', {
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	})
-}
-
-/**
  * Get the Hijri equivalent of a Gregorian date
  */
 export function getHijriEquivalent(
 	gregorianDate: Temporal.PlainDate,
 ): Temporal.PlainDate {
 	return gregorianDate.withCalendar('islamic-umalqura')
-}
-
-/**
- * Get the Gregorian equivalent of a Hijri date
- */
-export function getGregorianEquivalent(
-	hijriDate: Temporal.PlainDate,
-): Temporal.PlainDate {
-	return hijriDate.withCalendar('gregory')
-}
-
-/**
- * Calculate days until next birthday for a given birth date
- */
-export function calculateDaysUntilBirthday(
-	birthDate: Temporal.PlainDate,
-): number {
-	const today = Temporal.Now.plainDateISO().withCalendar(birthDate.calendarId)
-	let nextBirthday = birthDate.with({ year: today.year })
-
-	if (Temporal.PlainDate.compare(nextBirthday, today) < 0) {
-		nextBirthday = nextBirthday.add({ years: 1 })
-	}
-
-	return Math.ceil(nextBirthday.since(today).total({ unit: 'day' }))
 }

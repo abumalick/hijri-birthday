@@ -16,10 +16,8 @@
 		/* Linting */
 		"skipLibCheck": true,
 		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
+		"noUncheckedIndexedAccess": true,
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]

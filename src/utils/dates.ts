@@ -75,10 +75,6 @@ export function getTimeUntilBirthday(
 	}
 }
 
-export function getDaysUntilBirthday(birthDate: Temporal.PlainDate): number {
-	return getTimeUntilBirthday(birthDate).totalDays
-}
-
 export function getCountdownColor(
 	daysUntil: number,
 ): 'error' | 'warning' | 'success' {
@@ -117,13 +113,6 @@ export function formatCountdown(timeUntil: TimeUntilBirthday): string {
 	return `${monthText}, ${dayText}`
 }
 
-// Overloaded function for backward compatibility
-export function formatCountdownFromDays(daysUntil: number): string {
-	if (daysUntil === 0) return 'Today!'
-	if (daysUntil === 1) return '1 Day'
-	return `${Math.ceil(daysUntil)} Days`
-}
-
 export function getNextGregorianBirthday(
 	gregorianBirthDate: Temporal.PlainDate,
 ): Temporal.PlainDate {
@@ -156,17 +145,6 @@ export function getCurrentHijriDate(): Temporal.PlainDate {
 
 export function getCurrentGregorianDate(): Temporal.PlainDate {
 	return Temporal.Now.plainDateISO()
-}
-
-export function formatCurrentHijriDate(): string {
-	const hijriDate = getCurrentHijriDate()
-	return hijriDate.toLocaleString('en-US', {
-		calendar: 'islamic-umalqura',
-		weekday: 'long',
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	})
 }
 
 export function formatCurrentHijriDateShort(): string {
