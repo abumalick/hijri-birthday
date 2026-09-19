@@ -14,3 +14,6 @@ count.txt
 /blob-report/
 /playwright/.cache/
 /plans
+
+# Parallel-development worktrees (scripts/worktree.sh)
+.worktrees/
