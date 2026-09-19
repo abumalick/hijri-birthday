@@ -1,4 +1,5 @@
 import { Temporal } from '@js-temporal/polyfill'
+import { displayHijriDate } from '../../src/utils/dates'
 
 /**
  * Test date utilities for generating consistent test data
@@ -100,12 +101,7 @@ export function formatDateForInput(date: Temporal.PlainDate): string {
 export function formatHijriDateForDisplay(
 	hijriDate: Temporal.PlainDate,
 ): string {
-	return hijriDate.toLocaleString('en-US', {
-		calendar: 'islamic-umalqura',
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	})
+	return displayHijriDate(hijriDate)
 }
 
 /**

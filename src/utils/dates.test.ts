@@ -15,6 +15,7 @@ describe('Date Utilities', () => {
 
 	afterEach(() => {
 		vi.useRealTimers()
+		vi.restoreAllMocks()
 	})
 	describe('getHijriDate', () => {
 		it('should convert a Gregorian date to Hijri (Umm al-Qura)', () => {
@@ -170,6 +171,31 @@ describe('Date Utilities', () => {
 			// This corresponds to 2024-07-17, which is a Wednesday.
 			const formattedDate = displayHijriDate(hijriDate)
 			expect(formattedDate).toBe('Muharram 11, 1446 AH')
+		})
+
+		it('should use the Hijri month names from the months reference', () => {
+			const hijriDate = Temporal.PlainDate.from({
+				year: 1448,
+				month: 4,
+				day: 8,
+				calendar: 'islamic-umalqura',
+			})
+			expect(displayHijriDate(hijriDate)).toBe("Rabi' al-Thani 8, 1448 AH")
+		})
+
+		it('should not depend on the browser supporting the Hijri calendar in Intl', () => {
+			// Browsers without islamic-umalqura data (e.g. Vivaldi on Android)
+			// format the Hijri fields with Gregorian month names and eras.
+			vi.spyOn(Temporal.PlainDate.prototype, 'toLocaleString').mockReturnValue(
+				'April 8, 1448 BC',
+			)
+			const hijriDate = Temporal.PlainDate.from({
+				year: 1448,
+				month: 4,
+				day: 8,
+				calendar: 'islamic-umalqura',
+			})
+			expect(displayHijriDate(hijriDate)).toBe("Rabi' al-Thani 8, 1448 AH")
 		})
 	})
 })

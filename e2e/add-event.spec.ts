@@ -11,7 +11,7 @@ test('add new event', async ({ page }) => {
 	await page.getByTestId('gregorian-date-input').fill('2024-01-01')
 
 	await expect(page.getByTestId('hijri-date-preview')).toHaveText(
-		'Jumada II 19, 1445 AH',
+		'Jumada al-Thani 19, 1445 AH',
 	)
 
 	await page.getByTestId('submit-button').click()

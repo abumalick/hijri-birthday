@@ -1,4 +1,5 @@
 import { Temporal } from '@js-temporal/polyfill'
+import { hijriMonths } from './hijriMonths'
 
 export function getHijriDate(
 	gregorianDate: Temporal.PlainDate,
@@ -42,13 +43,11 @@ export function displayGregorianDate(
 	})
 }
 
+// Month names come from our own table: browsers without Hijri calendar data in
+// Intl would otherwise print Gregorian month names (e.g. "April 8, 1448 BC").
 export function displayHijriDate(hijriDate: Temporal.PlainDate): string {
-	return hijriDate.toLocaleString('en-US', {
-		calendar: 'islamic-umalqura',
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	})
+	const { year, month, day } = hijriDate.withCalendar('islamic-umalqura')
+	return `${hijriMonths[month - 1]!.name} ${day}, ${year} AH`
 }
 
 // New countdown and timeline utilities
@@ -148,11 +147,5 @@ export function getCurrentGregorianDate(): Temporal.PlainDate {
 }
 
 export function formatCurrentHijriDateShort(): string {
-	const hijriDate = getCurrentHijriDate()
-	return hijriDate.toLocaleString('en-US', {
-		calendar: 'islamic-umalqura',
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	})
+	return displayHijriDate(getCurrentHijriDate())
 }
