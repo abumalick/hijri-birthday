@@ -18,7 +18,7 @@ WH_ENV_FILES=""                                 # space-separated gitignored fil
 # before the harness was committed.
 WH_UP_CMD='bun install --frozen-lockfile && bash "$here/dev-server.sh"'
 WH_FINISH_MODEL="merge-branch"                  # pr | merge-main | merge-branch
-WH_INTEGRATION_BRANCH="master"
+WH_INTEGRATION_BRANCH="main"
 WH_DEPLOY_CMD='cd "$main_root" && bun install --frozen-lockfile && bun run deploy'
 WH_DEPLOY_VERIFY='[ "$(curl -fsS -o /dev/null -w "%{http_code}" https://hijri-birthday.h2.limited)" = 200 ]'
 # ─────────────────────────────────────────────────────────────────────────────

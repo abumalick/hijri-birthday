@@ -3,11 +3,11 @@
 <!-- worktree-harness:begin -->
 ## Worktree development (required)
 
-**HARD RULE — never edit `master`'s working tree for code.** Every task that
+**HARD RULE — never edit `main`'s working tree for code.** Every task that
 touches files, however small, starts by creating a worktree. The top-level
-checkout stays on `master`, always. Only `*.md`/docs edits may happen on `master`,
+checkout stays on `main`, always. Only `*.md`/docs edits may happen on `main`,
 and even then its branch must not change. If you catch yourself having edited
-`master`, stop and move the change into a worktree
+`main`, stop and move the change into a worktree
 (`git stash push` → `scripts/worktree.sh create <branch>` → `git stash pop`).
 
 **Lifecycle (one line per phase):**
@@ -18,7 +18,7 @@ and even then its branch must not change. If you catch yourself having edited
    `scripts/worktree.sh up <branch>` (runs `bun install`, then Vite through portless;
    the printed port is informational — portless assigns the real one).
 3. **Finish** — after you (or the user) verify the preview, run
-   `scripts/worktree.sh finish <branch>`: merges `--no-ff` into `master`, pushes,
+   `scripts/worktree.sh finish <branch>`: merges `--no-ff` into `main`, pushes,
    runs `bun run deploy` from the top checkout, then checks
    `https://hijri-birthday.h2.limited` returns 200.
 4. **Verify deploy** — a task is **not done until the deploy is verified**. If
