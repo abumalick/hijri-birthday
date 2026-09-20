@@ -2,7 +2,9 @@ import { Temporal } from '@js-temporal/polyfill'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
 	displayHijriDate,
+	formatAgeDetail,
 	getAge,
+	getDetailedAge,
 	getGregorianDate,
 	getHijriDate,
 	getNextBirthday,
@@ -196,6 +198,69 @@ describe('Date Utilities', () => {
 				calendar: 'islamic-umalqura',
 			})
 			expect(displayHijriDate(hijriDate)).toBe("Rabi' al-Thani 8, 1448 AH")
+		})
+	})
+
+	describe('getDetailedAge', () => {
+		const freezeAt = (date: string) => {
+			vi.setSystemTime(
+				new Date(
+					Temporal.PlainDate.from(date).toZonedDateTime('UTC').toInstant()
+						.epochMilliseconds,
+				),
+			)
+		}
+
+		it('should return the age today in years, months and days', () => {
+			freezeAt('2026-09-20')
+			const age = getDetailedAge(Temporal.PlainDate.from('2025-03-30'))
+			expect(age).toEqual({ years: 1, months: 5, days: 21 })
+		})
+
+		it('should borrow from the year when the birthday has not passed yet', () => {
+			freezeAt('2026-09-20')
+			// 25 years and 8 months after 2000-12-31 is 2026-08-31, then 20 days.
+			const age = getDetailedAge(Temporal.PlainDate.from('2000-12-31'))
+			expect(age).toEqual({ years: 25, months: 8, days: 20 })
+		})
+
+		it('should return zero months and days on a birthday', () => {
+			freezeAt('2026-09-20')
+			const age = getDetailedAge(Temporal.PlainDate.from('1990-09-20'))
+			expect(age).toEqual({ years: 36, months: 0, days: 0 })
+		})
+
+		it('should count Hijri years for a Hijri birth date', () => {
+			// 2026-09-20 Gregorian is 1448-04-08 Hijri.
+			freezeAt('2026-09-20')
+			const birthDate = Temporal.PlainDate.from({
+				year: 1446,
+				month: 1,
+				day: 11,
+				calendar: 'islamic-umalqura',
+			})
+			expect(getDetailedAge(birthDate)).toEqual({
+				years: 2,
+				months: 2,
+				days: 27,
+			})
+		})
+	})
+
+	describe('formatAgeDetail', () => {
+		it('should abbreviate months and days', () => {
+			expect(formatAgeDetail({ years: 1, months: 5, days: 21 })).toBe(
+				'5 mo, 21 d',
+			)
+		})
+
+		it('should omit a unit that is zero', () => {
+			expect(formatAgeDetail({ years: 1, months: 0, days: 21 })).toBe('21 d')
+			expect(formatAgeDetail({ years: 1, months: 5, days: 0 })).toBe('5 mo')
+		})
+
+		it('should read "today" on a birthday', () => {
+			expect(formatAgeDetail({ years: 36, months: 0, days: 0 })).toBe('today')
 		})
 	})
 })

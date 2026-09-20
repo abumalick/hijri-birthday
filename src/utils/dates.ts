@@ -18,6 +18,27 @@ export function getAge(birthDate: Temporal.PlainDate): number {
 	return today.since(birthDate, { largestUnit: 'years' }).years
 }
 
+export interface DetailedAge {
+	years: number
+	months: number
+	days: number
+}
+
+export function getDetailedAge(birthDate: Temporal.PlainDate): DetailedAge {
+	const today = Temporal.Now.plainDateISO().withCalendar(birthDate.calendarId)
+	const { years, months, days } = today.since(birthDate, {
+		largestUnit: 'years',
+	})
+	return { years, months, days }
+}
+
+export function formatAgeDetail({ months, days }: DetailedAge): string {
+	const parts = []
+	if (months > 0) parts.push(`${months} mo`)
+	if (days > 0) parts.push(`${days} d`)
+	return parts.length > 0 ? parts.join(', ') : 'today'
+}
+
 export function getNextBirthday(
 	birthDate: Temporal.PlainDate,
 ): Temporal.PlainDate {
