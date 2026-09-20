@@ -26,7 +26,10 @@ export interface DetailedAge {
 
 export function getDetailedAge(birthDate: Temporal.PlainDate): DetailedAge {
 	const today = Temporal.Now.plainDateISO().withCalendar(birthDate.calendarId)
-	const { years, months, days } = today.since(birthDate, {
+	// Anchored at the birth date, so the days count from the monthly
+	// anniversary forwards; since() would anchor at today and walk back,
+	// which lands a few days out whenever a short month is involved.
+	const { years, months, days } = birthDate.until(today, {
 		largestUnit: 'years',
 	})
 	return { years, months, days }

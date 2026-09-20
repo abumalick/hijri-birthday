@@ -202,11 +202,13 @@ describe('Date Utilities', () => {
 	})
 
 	describe('getDetailedAge', () => {
+		// Local midnight, so the frozen day matches Temporal.Now in any timezone.
 		const freezeAt = (date: string) => {
 			vi.setSystemTime(
 				new Date(
-					Temporal.PlainDate.from(date).toZonedDateTime('UTC').toInstant()
-						.epochMilliseconds,
+					Temporal.PlainDate.from(date)
+						.toZonedDateTime(Temporal.Now.timeZoneId())
+						.toInstant().epochMilliseconds,
 				),
 			)
 		}
@@ -222,6 +224,13 @@ describe('Date Utilities', () => {
 			// 25 years and 8 months after 2000-12-31 is 2026-08-31, then 20 days.
 			const age = getDetailedAge(Temporal.PlainDate.from('2000-12-31'))
 			expect(age).toEqual({ years: 25, months: 8, days: 20 })
+		})
+
+		it('should count the days from the monthly anniversary, not backwards from today', () => {
+			freezeAt('2020-10-15')
+			// The 24y 7mo anniversary is 2020-09-20, which is 25 days ago.
+			const age = getDetailedAge(Temporal.PlainDate.from('1996-02-20'))
+			expect(age).toEqual({ years: 24, months: 7, days: 25 })
 		})
 
 		it('should return zero months and days on a birthday', () => {
