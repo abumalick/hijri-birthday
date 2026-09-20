@@ -1,5 +1,9 @@
 import { Link } from '@tanstack/react-router'
-import { displayGregorianDate, displayHijriDate } from '../../../utils/dates'
+import {
+	displayGregorianDate,
+	displayHijriDate,
+	formatAgeDetail,
+} from '../../../utils/dates'
 import type { RecordedDateEntry } from '../-hooks/useRecordedDates'
 
 interface RecordedDateCardProps {
@@ -36,7 +40,10 @@ export function RecordedDateCard({ entry }: RecordedDateCardProps) {
 						<div className="grid grid-cols-2 gap-4">
 							<div className="text-center">
 								<div className="text-2xl font-bold text-primary">
-									{entry.gregorianAge}
+									{entry.gregorianAge.years}
+								</div>
+								<div className="text-xs text-base-content/70">
+									{formatAgeDetail(entry.gregorianAge)}
 								</div>
 								<div className="text-xs text-base-content/60">
 									Gregorian Age
@@ -44,7 +51,10 @@ export function RecordedDateCard({ entry }: RecordedDateCardProps) {
 							</div>
 							<div className="text-center">
 								<div className="text-2xl font-bold text-secondary">
-									{entry.hijriAge}
+									{entry.hijriAge.years}
+								</div>
+								<div className="text-xs text-base-content/70">
+									{formatAgeDetail(entry.hijriAge)}
 								</div>
 								<div className="text-xs text-base-content/60">Hijri Age</div>
 							</div>
