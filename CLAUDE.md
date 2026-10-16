@@ -3,30 +3,33 @@
 <!-- worktree-harness:begin -->
 ## Worktree development (required)
 
-**HARD RULE — never edit `main`'s working tree for code.** Every task that
-touches files, however small, starts by creating a worktree. The top-level
-checkout stays on `main`, always. Only `*.md`/docs edits may happen on `main`,
-and even then its branch must not change. If you catch yourself having edited
-`main`, stop and move the change into a worktree
-(`git stash push` → `scripts/worktree.sh create <branch>` → `git stash pop`).
+**HARD RULE — never edit the main checkout's working tree for code.** Every task
+that touches files, however small, starts in its own worktree. The main checkout
+stays on `main`, always; only docs edits may happen there, and its branch must
+never change. Uncommitted changes in the main checkout may belong to sibling
+agents: never commit, stash or revert them.
 
-**Lifecycle (one line per phase):**
-1. **Start** — `scripts/worktree.sh create <branch>`; it prints the worktree path and
-   dev URL (`https://hijri-birthday-<branch-leaf>.dev.sageplex.com`). Pick a leaf no
-   other open branch uses — `feat/foo` and `fix/foo` share one URL.
-2. **Work** — edit only inside `.worktrees/<branch>`; start its dev server with
-   `scripts/worktree.sh up <branch>` (runs `bun install`, then Vite through portless;
-   the printed port is informational — portless assigns the real one).
-3. **Finish** — after you (or the user) verify the preview, run
-   `scripts/worktree.sh finish <branch>`: merges `--no-ff` into `main`, pushes,
-   runs `bun run deploy` from the top checkout, then checks
-   `https://hijri-birthday.h2.limited` returns 200.
-4. **Verify deploy** — a task is **not done until the deploy is verified**. If
-   `finish` reports DEPLOY/VERIFY FAILED, the merge is already pushed: fix forward,
-   and do not tear down the worktree until the site is healthy.
-5. **Clean up** — `scripts/worktree.sh remove <branch>` (only worktrees this
-   session created and whose work is merged), then `git worktree list` to surface
-   any worktrees other agents left open — **do not touch those**.
+- **Start** — `wt="$(scripts/worktree.sh create <branch>)" && cd "$wt"`. It prints
+  only the worktree path (folder names are slugified: never guess
+  `.worktrees/<branch>`) and starts or rebases the branch on `main`. If the
+  current checkout has no `scripts/worktree.sh`, run the main checkout's copy by
+  its absolute path.
+- **Dev server** — `scripts/worktree.sh up <branch> --bg` (prints log path and
+  pid); URL `https://hijri-birthday-<branch-leaf>.dev.sageplex.com`. Pick a leaf
+  no other open branch uses — `feat/foo` and `fix/foo` share one URL.
+- **Work** — edit, run and commit only inside that path.
+- **Finish** — once you (or the user) have checked the preview, commit, then
+  `scripts/worktree.sh finish <branch>` (merges `--no-ff` into `main`, pushes,
+  runs `bun run deploy` from the main checkout, then checks
+  `https://hijri-birthday.h2.limited` returns 200). On success it removes the
+  worktree and the merged branch; on failure it keeps them, so fix there and
+  re-run.
+- **Verify deploy** — finish deploys and verifies; a task is **not done until the
+  deploy is verified**. If finish reports DEPLOY/VERIFY FAILED, the merge is
+  already pushed: fix forward.
+- **Clean up (mandatory)** — never leave your worktree behind.
+  `scripts/worktree.sh list` shows each worktree's merged/dirty state and stray
+  processes. Never remove a worktree another agent owns.
 <!-- worktree-harness:end -->
 
 <!-- superpowers-usage:begin -->
